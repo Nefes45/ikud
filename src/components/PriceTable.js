@@ -4,7 +4,6 @@ import Marquee from './Marquee';
 import Carousel from './Carousel';
 import { OperationsContext } from '../AdminPanel/context/OperationsContext';
 
-
 const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar }) => {
   const [prices, setPrices] = useState([]);
   const { operations } = useContext(OperationsContext);
@@ -74,7 +73,7 @@ const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar
   };
 
   const formatNumber = (number) => {
-    const roundedNumber = Math.ceil(number * 10) / 10; // 0.10 katlarına yuvarlama
+    const roundedNumber = Math.ceil(number * 10) / 10;
     return new Intl.NumberFormat('en-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
@@ -93,7 +92,8 @@ const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar
   return (
     <div className="table-container container-fluid">
       <div className="row header2 text-center d-flex align-items-center justify-content-between">
-        <div className="col-sm">
+        <div className="col-sm-8">
+          {/* Fiyat Tablosu */}
           <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
             <div className="col-4 h">CANLI</div>
             <div className="col-4">ALIŞ</div>
@@ -143,12 +143,13 @@ const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar
             </div>
           </div>
         </div>
-        <div className="col-sm d-flex justify-content-center p-0">
+        <div className="col-sm-4 slayt-container">
           <Carousel />
         </div>
       </div>
       <div className="row header2 text-center d-flex align-items-center justify-content-between">
         <div className="col-sm border-right">
+          {/* Sağdaki Fiyat Tablosu */}
           <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
             <div className={`col-1 p3 d`}>Y</div>
             <div className={`col-3 p3 h`}>ÇEYREK</div>

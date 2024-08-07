@@ -1,7 +1,7 @@
 .carousel-container {
   width: 100%; /* Genişliği yüzdeye göre ayarlandı */
-  max-width: 1060px; /* Maksimum genişlik ayarlandı */
-  height: 480px; /* Yükseklik korunuyor */
+  max-width: 800px; /* Maksimum genişlik azaltıldı */
+  height: 350px; /* Yükseklik slayt-container ile uyumlu hale getirildi */
   margin: 0 auto; /* Ortalanması için margin ayarlandı */
   border: 3px solid #978f8f; /* Çerçeve ekleme */
   border-radius: 8px; /* Köşeleri yuvarlama */
@@ -11,5 +11,15 @@
 .carousel-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Resimleri kesmeden sığdır */
+}
+
+.slayt-container {
+  background-color: #001a5e;
+  border: 2px solid #978f8f;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 350px; /* Slayt gösterisinin yüksekliği */
+  width: 32%;
+  margin-top: 1px; /* Üstten biraz boşluk */
 }

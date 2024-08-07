@@ -19,7 +19,7 @@
 }
 
 .header-logo {
-  width: 110px;
+  width: 140px; /* Logonun boyutunu büyüttük */
   height: auto;
   animation: fadeIn 2s ease-in-out;
   transition: transform 0.3s ease, filter 0.3s ease;
@@ -43,18 +43,9 @@
   animation: slideIn 1.5s ease-out;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
   transition: transform 0.5s ease, color 0.5s ease;
-  color: #f0f0f0;
+  color: #ffffff; /* Yazı rengi beyaz olacak şekilde düzenlendi */
   display: inline-block;
-  background: linear-gradient(90deg, #f0f0f0, #ffdd00);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   margin: 0;
-}
-
-.header-title:hover {
-  transform: scale(1.05) translateY(-3px);
-  color: #ffdd00;
 }
 
 .header-title .underline {
@@ -120,7 +111,7 @@
   }
 
   .header-logo {
-    width: 90px;
+    width: 100px; /* Mobil görünümde logoyu da büyüttük */
     margin: 10px 0;
   }
 

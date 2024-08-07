@@ -90,12 +90,9 @@ const AdminPanel = ({ marqueeText, setMarqueeText, scrollAmount, setScrollAmount
             {currentUser.role === 'Admin' && (
               <>
                 <li>
-                  <button onClick={toggleSidebar}><i className="fas fa-dollar-sign fa-icon"></i>Fiyat Güncelleme</button>
-                  <div className={`submenu ${sidebarOpen ? 'open' : ''}`}>
-                    <Link to="/admin/price-update"><i className="fas fa-dollar-sign fa-icon"></i>Fiyat Güncelleme</Link>
-                    <Link to="/admin/price-table"><i className="fas fa-table fa-icon"></i>Fiyat Tablosu</Link>
-                  </div>
+                  <Link to="/admin/price-update"><i className="fas fa-dollar-sign fa-icon"></i>Fiyat Güncelleme</Link>
                 </li>
+                <li><Link to="/admin/price-table"><i className="fas fa-table fa-icon"></i>Fiyat Tablosu</Link></li>
                 <li><Link to="/admin/user-management"><i className="fas fa-users fa-icon"></i>Kullanıcı Yönetimi</Link></li>
                 <li><Link to="/admin/marquee-settings"><i className="fas fa-newspaper fa-icon"></i>Kayan Yazı</Link></li>
                 <li><Link to="/admin/slide-management"><i className="fas fa-images fa-icon"></i>Slayt Yönetimi</Link></li>
@@ -117,6 +114,7 @@ const AdminPanel = ({ marqueeText, setMarqueeText, scrollAmount, setScrollAmount
               <>
                 <Route path="settings" element={<Settings />} />
                 <Route path="price-update" element={<PriceUpdateForm />} />
+                <Route path="price-table" element={<PriceTable />} />
                 <Route path="user-management" element={<UserManagement />} />
                 <Route path="marquee-settings" element={<MarqueeSettings marqueeText={marqueeText} setMarqueeText={setMarqueeText} scrollAmount={scrollAmount} setScrollAmount={setScrollAmount} onSave={onSaveMarqueeSettings} />} />
                 <Route path="slide-management" element={<SlideManagement />} />
@@ -128,14 +126,6 @@ const AdminPanel = ({ marqueeText, setMarqueeText, scrollAmount, setScrollAmount
               <Route path="price-update" element={<PriceUpdateForm />} />
             )}
           </Routes>
-          <PriceTable 
-            marqueeText={marqueeText} 
-            scrollAmount={scrollAmount} 
-            symbols={symbols} 
-            operations={operations}
-            show18Ayar={show18Ayar}
-            show14Ayar={show14Ayar}
-          />
         </div>
         <AdminFooter />
       </div>
