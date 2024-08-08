@@ -4,42 +4,48 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('currentUser')));
+
+  const usersFilePath = '/users.json'; // JSON dosyasının yolu
 
   useEffect(() => {
-    const storedUsers = JSON.parse(localStorage.getItem('users'));
-    
-    if (storedUsers && storedUsers.length > 0) {
-      setUsers(storedUsers);
-    } else {
-      fetch('/users.json')
-        .then(response => response.json())
-        .then(data => {
-          setUsers(data);
-          localStorage.setItem('users', JSON.stringify(data));
-        })
-        .catch(error => console.error('Error loading users:', error.message));
-    }
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch(usersFilePath);
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error('Kullanıcıları çekerken hata oluştu:', error.message);
+      }
+    };
+
+    fetchUsers();
   }, []);
 
-  const setActiveStatus = (userId, isActive) => {
-    const updatedUsers = users.map(user => 
-      user.id === userId ? { ...user, isActive: isActive } : user
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    }
+  }, [currentUser]);
+
+  const setActiveStatus = (id, status) => {
+    const updatedUsers = users.map(user =>
+      user.id === id ? { ...user, isActive: status } : user
     );
     setUsers(updatedUsers);
-    localStorage.setItem('users', JSON.stringify(updatedUsers));
+    // Burada localStorage veya bir dosya güncellemesi yapılabilir.
   };
 
   const addUser = (newUser) => {
-    const updatedUsers = [...users, { ...newUser, id: users.length + 1, isActive: false }];
+    const updatedUsers = [...users, { ...newUser, id: users.length ? users[users.length - 1].id + 1 : 1 }];
     setUsers(updatedUsers);
-    localStorage.setItem('users', JSON.stringify(updatedUsers));
+    // Burada localStorage veya bir dosya güncellemesi yapılabilir.
   };
 
   const deleteUser = (userId) => {
     const updatedUsers = users.filter(user => user.id !== userId);
     setUsers(updatedUsers);
-    localStorage.setItem('users', JSON.stringify(updatedUsers));
+    // Burada localStorage veya bir dosya güncellemesi yapılabilir.
   };
 
   return (

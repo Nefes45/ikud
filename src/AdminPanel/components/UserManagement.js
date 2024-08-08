@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 
 const UserManagement = () => {
-  const { users, setUsers, addUser, deleteUser, currentUser, setActiveStatus, setCurrentUser } = useContext(UserContext);
+  const { users, addUser, deleteUser, currentUser, setActiveStatus, setCurrentUser } = useContext(UserContext);
   const [newUser, setNewUser] = useState({ name: '', email: '', role: 'Kullanıcı', password: '' });
   const [notification, setNotification] = useState({ message: '', type: '' });
   const [searchTerm, setSearchTerm] = useState('');
@@ -23,7 +23,7 @@ const UserManagement = () => {
     }
 
     try {
-      addUser(newUser);
+      await addUser(newUser);
       setNewUser({ name: '', email: '', role: 'Kullanıcı', password: '' });
       setNotification({ message: 'Kullanıcı başarıyla eklendi!', type: 'success' });
     } catch (error) {
@@ -33,16 +33,11 @@ const UserManagement = () => {
 
   const handleDeleteUser = async (userId) => {
     try {
-      deleteUser(userId);
+      await deleteUser(userId);
       setNotification({ message: 'Kullanıcı başarıyla silindi!', type: 'success' });
     } catch (error) {
       setNotification({ message: 'Kullanıcı silinirken hata oluştu.', type: 'error' });
     }
-  };
-
-  const handleResetUsers = () => {
-    setUsers([]); // Kullanıcı listesini sıfırlar
-    setNotification({ message: 'Kullanıcı listesi başarıyla sıfırlandı!', type: 'success' });
   };
 
   const handleEditUser = (user) => {
@@ -109,7 +104,6 @@ const UserManagement = () => {
           />
         </div>
         <button className="save-button" onClick={handleAddUser}>Kullanıcı Ekle</button>
-        <button className="reset-button" onClick={handleResetUsers}>Kullanıcıları Sıfırla</button>
         <button className="logout-button" onClick={handleLogout}>Çıkış Yap</button>
       </div>
       <input

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/Login.css';
 import { UserContext } from './AdminPanel/context/UserContext';
@@ -14,17 +14,25 @@ const Login = () => {
   const navigate = useNavigate();
   const { users, currentUser, setCurrentUser, setActiveStatus } = useContext(UserContext);
 
+  useEffect(() => {
+    // Eğer currentUser mevcutsa admin sayfasına yönlendir
+    if (currentUser) {
+      navigate('/admin', { replace: true });
+    }
+  }, [currentUser, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const user = users.find(u => u.name === username && u.password === password);
+    setError(''); // Hata mesajını temizleyin
+    const user = users.find(u => u.name.toLowerCase() === username.toLowerCase() && u.password === password);
+
     if (user) {
       if (!user.isActive || !currentUser) {
         setCurrentUser(user);
-        setActiveStatus(user.id, true);
-        setTimeout(() => {
-          navigate('/admin');
-        }, 1000);
+        localStorage.setItem('currentUser', JSON.stringify(user)); // Kullanıcıyı yerel depolamaya kaydedin
+        await setActiveStatus(user.id, true);
+        navigate('/admin', { replace: true }); // Kullanıcıyı yönlendirirken replace kullanın
       } else {
         setError('Kullanıcı zaten başka bir oturumda açık.');
       }

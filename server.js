@@ -1,13 +1,19 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors'); // CORS'u kullanabilmek için eklenmesi gerekli
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
+// CORS ayarları
+const corsOptions = {
+  origin: ['https://stildunyasi.site', 'http://localhost:3000'], // Güvenli domainleri belirleyin
+  methods: ['GET', 'POST', 'DELETE', 'PUT'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
-
-// Statik dosyaları sunmak için build klasörünü kullan
-app.use(express.static(path.join(__dirname, 'build')));
 
 // users.json dosyası için doğru yol
 const usersFilePath = path.join(__dirname, 'public', 'users.json');
@@ -32,44 +38,46 @@ const writeUsersToFile = (users) => {
   }
 };
 
-// Kullanıcıları getirme
+// Sunucu başlatıldığında kullanıcıları yükle
+let users = readUsersFromFile();
+
+// Kullanıcıları listeleme API'si
 app.get('/users', (req, res) => {
-  const users = readUsersFromFile();
   res.json(users);
 });
 
-// Yeni kullanıcı ekleme
+// Yeni kullanıcı ekleme API'si
 app.post('/users', (req, res) => {
-  const users = readUsersFromFile();
   const newUser = { ...req.body, id: users.length ? users[users.length - 1].id + 1 : 1 };
-
   users.push(newUser);
   writeUsersToFile(users);
-
   res.status(201).json(newUser);
 });
 
-// Kullanıcı silme
+// Kullanıcı silme API'si
 app.delete('/users/:id', (req, res) => {
-  let users = readUsersFromFile();
   const userId = parseInt(req.params.id);
-
-  if (!users.some(user => user.id === userId)) {
-    return res.status(404).json({ message: 'User not found' });
+  if (isNaN(userId)) {
+    return res.status(400).json({ error: 'Invalid user ID' });
   }
-
+  const initialLength = users.length;
   users = users.filter(user => user.id !== userId);
+  if (users.length === initialLength) {
+    return res.status(404).json({ error: 'User not found' });
+  }
   writeUsersToFile(users);
-
   res.json({ message: 'User deleted successfully' });
 });
 
-// Diğer tüm istekleri index.html dosyasına yönlendir
+// Statik dosyaları servis et
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Tüm yolları yakala ve index.html döndür
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-// Sunucuyu başlatma
+// Sunucuyu başlat
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

@@ -1,103 +1,136 @@
-.table-container {
+.tablo-container {
   background-color: #001F5B;
   color: #FFFFFF;
-  font-size: 1.4em;
+  font-size: 1.6em;
   font-weight: bold;
+  width: 100%;
 }
 
-.header2 {
-  font-size: 1.2em;
+.başlık2, .başlık4 {
+  font-size: 1.4em;
   font-weight: bold;
+  padding: 0px;
+}
+.başlık4.p3
+{
+  padding-left: -5px;
+  padding-right: 0px;
+  text-align: left;
+}
+.başlık2 .p3 {
+  padding-left: 0px;
+  padding-right: 0px;
+  text-align: left;
+}
+
+.başlık2 .bg-light, .başlık4 .bg-light {
+  background-color: #b3b5b8 !important;
+  color: #343a40 !important;
+  text-align: left; /* Sağdaki fiyatları sağa hizala */
+}
+
+.başlık2 .h, .başlık4 .h {
+  text-align: left;
+  font-weight: bold !important;
+}
+
+.başlık2 .d, .başlık4 .d {
+  text-align: left;
+  color: yellow;
+  font-weight: bold !important;
 }
 
 .r {
   color: red;
-  font-weight: bold;
 }
 
-.header3 {
-  background-color: #123456;
-  color: #FFFFFF;
-  font-size: 2em;
-  padding: 20px;
-  font-weight: bold;
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+.col-4{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+.col-3{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+.col-2{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+ .col-2, .col-1 {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Tüm metinleri ortala */
 }
 
-.header4 {
-  background-color: #345678;
-  color: #FFFFFF;
-  font-size: 1.5em;
-  font-weight: bold;
+.col-4 {
+  flex: 0 0 33.3333%;
+  max-width: 33.3333%;
 }
 
-.p3 {
-  padding: 12px;
-  font-weight: bold;
+.col-3 {
+  flex: 0 0 25%;
+  max-width: 25%;
 }
 
-.bg-light {
-  background-color: #b3b5b8 !important;
-  font-weight: bold !important; /* Yazıları kalın yapma */
+.col-2 {
+  flex: 0 0 16.6667%;
+  max-width: 16.6667%;
 }
 
-.text-dark {
-  color: #343a40 !important;
-  font-weight: bold !important; /* Yazıları kalın yapma */
-}
-
-.h {
-  text-align: left;
-  font-weight: bold !important; /* Yazıları kalın yapma */
-}
-
-.d {
-  text-align: center;
-  color: yellow;
-  font-weight: bold !important; /* Yazıları kalın yapma */
+.col-1 {
+  flex: 0 0 8.3333%;
+  max-width: 8.3333%;
 }
 
 .border-bottom {
-  border-bottom: 3px solid #ccc;
-  font-weight: bold !important; /* Yazıları kalın yapma */
+  border-bottom: 2px solid #FFFFFF;
 }
 
-.text-center {
-  text-align: center;
-  font-weight: bold !important; /* Yazıları kalın yapma */
-}
-
-.text-right {
-  text-align: right;
-  font-weight: bold !important; /* Yazıları kalın yapma */
+.border-right {
+  border-right: 2px solid #FFFFFF;
 }
 
 .container-fluid {
-  padding: 0px;
+  padding-right: 0;
+  padding-left: 0;
 }
 
-.image {
-  max-width: 80%;
-  height: auto;
+.text-center {
+  text-align: left;
 }
 
-/* Gelen Rakamlar İçin Spesifik Stil */
-.p3 span, .bg-light span, .text-dark span {
-  font-weight: bolder !important; /* Rakamları daha kalın yapma */
+/* 14, 18, 22, 24 ve CANLI metinlerini sola hizala */
+.col-4.align-left, .col-4.c-left {
+  justify-content: flex-start; /* Metinleri sola hizala */
+  padding-left: 10px; /* Sol tarafa biraz boşluk bırak */
 }
 
-/* Slayt Gösterisi */
-.slayt-container {
-  background-color: #001a5e;
-  border: 1px solid #978f8f;
-  border-radius: 1px;
-  overflow: hidden;
-  height: 390px; /* Slayt gösterisinin yüksekliği */
-  width: 32%;
-  margin-top: 1px; /* Üstten biraz boşluk */
+/* Üst ve alt tabloların gri sütunlarını hizala */
+.başlık2 .bg-light, .başlık4 .bg-light {
+  width: 50%; /* Gri sütun genişliğini aynı yap */
 }
 
-.carousel-inner img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.hiza-alta {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.hiza-alt {
+  align-items: flex-start;
+}
+
+.alt-tablo .col-2 {
+  flex: 0 0 16.6667%;  /* Genişliği ayarla */
+  max-width: 16.6667%;  /* Genişliği ayarla */
+  text-align: left;
 }

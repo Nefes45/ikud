@@ -11,6 +11,7 @@
   animation-name: marquee;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+  font-size: 1.2em; /* TV ekranı için yazı boyutu artırıldı */
 }
 
 @keyframes marquee {

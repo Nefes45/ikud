@@ -15,7 +15,7 @@ const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar
       ws = new WebSocket('ws://152.89.36.148:24876');
 
       ws.onopen = () => {
-        console.log('WebSocket connection opened');
+        console.log('WebSocket bağlantısı açıldı');
       };
 
       ws.onmessage = (event) => {
@@ -29,17 +29,17 @@ const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar
           }));
           setPrices(updatedData);
         } catch (error) {
-          console.error('Error parsing WebSocket message:', error);
+          console.error('WebSocket mesajı ayrıştırılırken hata oluştu:', error);
         }
       };
 
       ws.onclose = () => {
-        console.log('WebSocket connection closed, retrying...');
+        console.log('WebSocket bağlantısı kapandı, yeniden bağlanıyor...');
         setTimeout(connectWebSocket, 30000);
       };
 
       ws.onerror = (error) => {
-        console.error('WebSocket error:', error);
+        console.error('WebSocket hatası:', error);
       };
     };
 
@@ -84,60 +84,59 @@ const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar
     const item = prices.find(item => item.Code === code);
     if (!item) return { Bid: 0, Ask: 0 };
     return {
-      Bid: item.Bid,
-      Ask: item.Ask,
+      Bid: item.Bid.toFixed(2),  // Fiyatın iki ondalık basamağa sahip olmasını sağla
+      Ask: item.Ask.toFixed(2),
     };
   };
 
   return (
-    <div className="table-container container-fluid">
-      <div className="row header2 text-center d-flex align-items-center justify-content-between">
+    <div className="tablo-container container-fluid">
+      <div className="row başlık2 text-center d-flex align-items-center justify-content-between">
         <div className="col-sm-8">
-          {/* Fiyat Tablosu */}
-          <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
-            <div className="col-4 h">CANLI</div>
+          <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
+            <div className="col-4 c-left">CANLI</div>
             <div className="col-4">ALIŞ</div>
             <div className="col-4">SATIŞ</div>
           </div>
-          <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
-            <div className={`col-4 p3 h`}><span className="r">24</span> HAS</div>
+          <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
+            <div className={`col-4 p3 h align-left`}><span className="r">24</span> HAS</div>
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('UHAS').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('UHAS').Ask)}</span></div>
           </div>
-          <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
-            <div className={`col-4 p3 h`}><span className="r">22</span> AYAR</div>
+          <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
+            <div className={`col-4 p3 h align-left`}><span className="r">22</span> AYAR</div>
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('22AYAR').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('22AYAR').Ask)}</span></div>
           </div>
           {show18Ayar && (
-            <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
-              <div className={`col-4 p3 h`}><span className="r">18</span> AYAR</div>
+            <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
+              <div className={`col-4 p3 h align-left`}><span className="r">18</span> AYAR</div>
               <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('18AYAR').Bid)}</span></div>
               <div className="col-4 p3"><span>{formatNumber(getPriceData('18AYAR').Ask)}</span></div>
             </div>
           )}
           {!show18Ayar && (
-            <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
-              <div className={`col-4 p3 h`}><span className="r">18</span> AYAR</div>
+            <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
+              <div className={`col-4 p3 h align-left`}><span className="r">18</span> AYAR</div>
               <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('18AYAR').Bid)}</span></div>
               <div className="col-4 p3"></div>
             </div>
           )}
           {show14Ayar && (
-            <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
-              <div className={`col-4 p3 h`}><span className="r">14</span> AYAR</div>
+            <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
+              <div className={`col-4 p3 h align-left`}><span className="r">14</span> AYAR</div>
               <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('14AYAR').Bid)}</span></div>
               <div className="col-4 p3"><span>{formatNumber(getPriceData('14AYAR').Ask)}</span></div>
             </div>
           )}
           {!show14Ayar && (
-            <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
-              <div className={`col-4 p3 h`}><span className="r">14</span> AYAR</div>
+            <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
+              <div className={`col-4 p3 h align-left`}><span className="r">14</span> AYAR</div>
               <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('14AYAR').Bid)}</span></div>
               <div className="col-4 p3"></div>
             </div>
           )}
-          <div className="border-bottom header3 text-center d-flex align-items-center justify-content-between">
+          <div className="border-bottom başlık3 text-center d-flex align-items-center justify-content-between">
             <div className="col-12">
               {marqueeText && <Marquee text={marqueeText} scrollAmount={scrollAmount} />}
             </div>
@@ -147,65 +146,64 @@ const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar
           <Carousel />
         </div>
       </div>
-      <div className="row header2 text-center d-flex align-items-center justify-content-between">
+      <div className="row başlık2 text-center d-flex align-items-center justify-content-between">
         <div className="col-sm border-right">
-          {/* Sağdaki Fiyat Tablosu */}
-          <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
+          <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
             <div className={`col-1 p3 d`}>Y</div>
             <div className={`col-3 p3 h`}>ÇEYREK</div>
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('YCEYREK').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('YCEYREK').Ask)}</span></div>
           </div>
-          <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
+          <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
             <div className={`col-1 p3 d`}>E</div>
             <div className={`col-3 p3 h`}>YARIM</div>
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('YYARIM').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('YYARIM').Ask)}</span></div>
           </div>
-          <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
+          <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
             <div className={`col-1 p3 d`}>N</div>
             <div className={`col-3 p3 h`}>ZİYNET</div>
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('YZIYNET').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('YZIYNET').Ask)}</span></div>
           </div>
-          <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
+          <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
             <div className={`col-1 p3 d`}>İ</div>
             <div className={`col-3 p3 h`}>ATA</div>
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('YATA').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('YATA').Ask)}</span></div>
           </div>
-          <div className="row border-bottom header4 text-center d-flex align-items-center justify-content-between">
+          <div className="row border-bottom başlık4 text-center d-flex align-items-center justify-content-between">
             <div className={`col-4 p3 h`}>USD</div>
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('USDTRY').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('USDTRY').Ask)}</span></div>
           </div>
         </div>
         <div className="col-sm">
-          <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
+          <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
             <div className={`col-1 p3 d`}>E</div>
             <div className={`col-3 p3 h`}>ÇEYREK</div>
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('ECEYREK').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('ECEYREK').Ask)}</span></div>
           </div>
-          <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
+          <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
             <div className={`col-1 p3 d`}>S</div>
             <div className={`col-3 p3 h`}>YARIM</div>
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('EYARIM').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('EYARIM').Ask)}</span></div>
           </div>
-          <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
+          <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
             <div className={`col-1 p3 d`}>K</div>
             <div className={`col-3 p3 h`}>ZİYNET</div>
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('EZIYNET').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('EZIYNET').Ask)}</span></div>
           </div>
-          <div className="row border-bottom header2 text-center d-flex align-items-center justify-content-between">
+          <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
             <div className={`col-1 p3 d`}>İ</div>
             <div className={`col-3 p3 h`}>ATA</div>
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('EATA').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('EATA').Ask)}</span></div>
           </div>
-          <div className="row border-bottom header4 text-center d-flex align-items-center justify-content-between">
+          <div className="row border-bottom başlık4 text-center d-flex align-items-center justify-content-between">
             <div className={`col-4 p3 h`}>EURO</div>
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('EURTRY').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('EURTRY').Ask)}</span></div>
