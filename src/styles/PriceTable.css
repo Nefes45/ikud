@@ -1,37 +1,36 @@
 .tablo-container {
   background-color: #001F5B;
   color: #FFFFFF;
-  font-size: 1.6em;
+  font-size: 1.3em; /* Font boyutu */
   font-weight: bold;
   width: 100%;
 }
 
 .başlık2, .başlık4 {
-  font-size: 1.4em;
+  font-size: 1.6em; /* Font boyutu */
   font-weight: bold;
-  padding: 0px;
+  padding: 0;
 }
-.başlık4.p3
-{
-  padding-left: -5px;
-  padding-right: 0px;
+
+.başlık4.p3 {
+  padding-left: 0;
+  padding-right: 0;
   text-align: left;
 }
+
 .başlık2 .p3 {
-  padding-left: 0px;
-  padding-right: 0px;
-  text-align: left;
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: center;
 }
 
 .başlık2 .bg-light, .başlık4 .bg-light {
   background-color: #b3b5b8 !important;
   color: #343a40 !important;
-  text-align: left; /* Sağdaki fiyatları sağa hizala */
-}
-
-.başlık2 .h, .başlık4 .h {
   text-align: left;
-  font-weight: bold !important;
+  padding-left: 10px !important; /* Gri hücrelerin hizalanması için padding ayarlandı */
+  padding-right: 10px !important; /* Sağ hizalama için padding ayarlandı */
+  width: auto; /* Gri hücrelerin genişliği otomatik ayarlandı */
 }
 
 .başlık2 .d, .başlık4 .d {
@@ -44,93 +43,42 @@
   color: red;
 }
 
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: nowrap;
-}
-.col-4{
+.col-4, .col-3, .col-2, .col-1 {
   display: flex;
   align-items: center;
-  justify-content: center; 
-}
-.col-3{
-  display: flex;
-  align-items: center;
-  justify-content: center; 
-}
-.col-2{
-  display: flex;
-  align-items: center;
-  justify-content: center; 
-}
- .col-2, .col-1 {
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Tüm metinleri ortala */
-}
-
-.col-4 {
-  flex: 0 0 33.3333%;
-  max-width: 33.3333%;
-}
-
-.col-3 {
-  flex: 0 0 25%;
-  max-width: 25%;
-}
-
-.col-2 {
-  flex: 0 0 16.6667%;
-  max-width: 16.6667%;
-}
-
-.col-1 {
-  flex: 0 0 8.3333%;
-  max-width: 8.3333%;
+  justify-content: center;
 }
 
 .border-bottom {
-  border-bottom: 2px solid #FFFFFF;
+  border-bottom: 3px solid #FFFFFF;
 }
 
 .border-right {
-  border-right: 2px solid #FFFFFF;
+  border-right: 3px solid #FFFFFF;
 }
 
-.container-fluid {
-  padding-right: 0;
-  padding-left: 0;
-}
-
-.text-center {
-  text-align: left;
-}
-
-/* 14, 18, 22, 24 ve CANLI metinlerini sola hizala */
 .col-4.align-left, .col-4.c-left {
-  justify-content: flex-start; /* Metinleri sola hizala */
-  padding-left: 10px; /* Sol tarafa biraz boşluk bırak */
+  justify-content: flex-start;
+  padding-left: 15px; /* Sütunu sola kaydırmak için padding azaltıldı */
 }
 
-/* Üst ve alt tabloların gri sütunlarını hizala */
-.başlık2 .bg-light, .başlık4 .bg-light {
-  width: 50%; /* Gri sütun genişliğini aynı yap */
+/* Gri sütunları hizalamak için aşağıdaki kodlar eklendi */
+.col-4.p3.bg-light {
+  padding-left: 10px !important; /* Sola hizalamak için padding ayarlandı */
+  padding-right: 0px !important; /* Sağ hizalama için padding ayarlandı */
+  width: 30%; /* Tüm hücrelerin aynı genişlikte olması sağlandı */
 }
 
-.hiza-alta {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+/* Dolar ve Euro için arka plan renkleri */
+.usd-bg {
+  background-color: rgb(69, 218, 223) !important;
 }
 
-.hiza-alt {
-  align-items: flex-start;
+.euro-bg {
+  background-color: rgb(69, 218, 223) !important;
 }
 
-.alt-tablo .col-2 {
-  flex: 0 0 16.6667%;  /* Genişliği ayarla */
-  max-width: 16.6667%;  /* Genişliği ayarla */
-  text-align: left;
+.container-fluid .row > .col-sm-4, 
+.container-fluid .row > .col-sm {
+  flex: 1 2 0px;
 }

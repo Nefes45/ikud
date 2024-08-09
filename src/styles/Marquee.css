@@ -11,7 +11,7 @@
   animation-name: marquee;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
-  font-size: 1.2em; /* TV ekranı için yazı boyutu artırıldı */
+  font-size: 1.2em;
 }
 
 @keyframes marquee {
@@ -23,19 +23,16 @@
   }
 }
 
-/* Hover durumunda animasyonu durdurma */
 .marquee-container:hover .marquee-content {
   animation-play-state: paused;
 }
 
-/* Dinamik renk değişimi için */
 @keyframes colorChange {
   0% { color: red; }
   50% { color: blue; }
   100% { color: green; }
 }
 
-/* Döndürme animasyonu için */
 .rotate-animation {
   animation: rotate 10s linear infinite;
 }

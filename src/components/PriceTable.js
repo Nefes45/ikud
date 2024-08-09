@@ -172,7 +172,7 @@ const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('YATA').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('YATA').Ask)}</span></div>
           </div>
-          <div className="row border-bottom başlık4 text-center d-flex align-items-center justify-content-between">
+          <div className="row border-bottom başlık4 text-center d-flex align-items-center justify-content-between usd-bg">
             <div className={`col-4 p3 h`}>USD</div>
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('USDTRY').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('USDTRY').Ask)}</span></div>
@@ -203,7 +203,7 @@ const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('EATA').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('EATA').Ask)}</span></div>
           </div>
-          <div className="row border-bottom başlık4 text-center d-flex align-items-center justify-content-between">
+          <div className="row border-bottom başlık4 text-center d-flex align-items-center justify-content-between euro-bg">
             <div className={`col-4 p3 h`}>EURO</div>
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('EURTRY').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('EURTRY').Ask)}</span></div>

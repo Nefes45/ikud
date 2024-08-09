@@ -2,13 +2,14 @@ import React, { useContext, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './Login';
 import Signup from './Signup';
+import ForgotPassword from './ForgotPassword';  // ForgotPassword import edildi
 import PriceTable from './components/PriceTable';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import AdminPanel from './AdminPanel/components/AdminPanel';
 import { UserProvider, UserContext } from './AdminPanel/context/UserContext';
 import { SlideProvider } from './AdminPanel/context/SlideContext';
-import { OperationsProvider } from './AdminPanel/context/OperationsContext'; // Burada değişiklik yapıldı
+import { OperationsProvider } from './AdminPanel/context/OperationsContext'; 
 
 const symbols = ['ONS', 'USDTRY', 'EURTRY', 'EURUSD', 'HAS', 'YCEYREK', 'YYARIM', 'YZIYNET', 'YATA', 'ECEYREK', 'EYARIM', 'EZIYNET', 'EATA', 'UHAS', '18AYAR', '22AYAR', '14AYAR'];
 
@@ -61,6 +62,7 @@ const App = () => {
               <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} /> {/* ForgotPassword rotası eklendi */}
                 <Route exact path="/" element={<PrivateRoute element={
                   <>
                     <Header />

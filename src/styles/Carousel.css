@@ -1,29 +1,30 @@
 .carousel-container {
   width: 100%;
-  max-width: 600px; /* Maksimum genişlik artırıldı */
-  height: 100%; /* Yükseklik tam alanı kapsayacak şekilde ayarlandı */
-  margin: 0 auto; /* Ortalanması için margin ayarlandı */
+  max-width: 600px; /* Slayt genişliği küçültüldü */
+  min-height: auto;
+  height: 400px; /* Slayt yüksekliği küçültüldü */
+  margin: 0 auto;
   border: 1px solid #978f8f;
   border-radius: 10px;
   overflow: hidden;
-  margin-top: 0px; /* Üstten boşluk kaldırıldı */
-  margin-left: 0px; /* Soldan boşluk kaldırıldı */
-  display: flex; /* Flexbox kullanarak hizalama ayarlandı */
-  align-items: center; /* Dikeyde ortalama */
-  justify-content: center; /* Yatayda ortalama */
+  margin-top: 0px;
+  margin-left: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .carousel-inner {
   width: 100%;
-  height: 100%; /* İçerik yüksekliği tam alanı kapsayacak şekilde ayarlandı */
+  height: 100%;
 }
 
 .carousel-item {
-  height: 100%; /* Her slaytın yüksekliği tam alanı kapsayacak şekilde ayarlandı */
+  height: 100%;
 }
 
 .carousel-image {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Görselin kapsama şekli değiştirildi */
+  object-fit: cover;
 }

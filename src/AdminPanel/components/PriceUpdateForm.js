@@ -7,11 +7,14 @@ const PriceUpdateForm = () => {
   const [operations, setOperations] = useState({});
 
   useEffect(() => {
+    // Context operations yüklendiğinde operations state'ini günceller
+    console.log('Context operations loaded:', contextOperations);
     setOperations(contextOperations);
   }, [contextOperations]);
 
   const handleOperationChange = (e, key, type) => {
     const value = e.target.value;
+    console.log(`Changing operation for ${key} - ${type}:`, value);
     setOperations(prev => ({
       ...prev,
       [key]: {
@@ -23,12 +26,14 @@ const PriceUpdateForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateOperations(operations);
+    console.log('Submitting operations:', operations);
+    updateOperations(operations); // Context fonksiyonunu çağırarak state'i günceller
   };
 
   const handleReset = () => {
+    console.log('Resetting operations');
     setOperations({});
-    resetOperations();
+    resetOperations(); // Context fonksiyonunu çağırarak state'i sıfırlar
   };
 
   const formFields = [

@@ -19,6 +19,7 @@ const PendingRequests = () => {
             <th>Soyad</th>
             <th>Telefon Numarası</th>
             <th>Email</th>
+            <th>Talep Türü</th> {/* Yeni sütun ekliyoruz */}
           </tr>
         </thead>
         <tbody>
@@ -28,6 +29,7 @@ const PendingRequests = () => {
               <td>{user.surname}</td>
               <td>{user.phone}</td>
               <td>{user.email}</td>
+              <td>{user.type}</td> {/* Talep türünü gösteriyoruz */}
             </tr>
           ))}
         </tbody>
