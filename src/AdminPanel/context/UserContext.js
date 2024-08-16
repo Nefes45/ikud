@@ -4,7 +4,9 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
-  const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('currentUser')));
+  const [currentUser, setCurrentUser] = useState(() => {
+    return JSON.parse(localStorage.getItem('currentUser')) || null;
+  });
 
   const usersFilePath = '/users.json'; // JSON dosyasının yolu
 

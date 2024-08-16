@@ -85,7 +85,8 @@
 
 /* Slayt genişliği ve konumu ayarlandı */
 .slayt-container {
-  max-width: 100%; 
+  max-width: 100%;
+  
   height: auto; 
 }
 
@@ -115,4 +116,29 @@
   0% { opacity: 1; }
   50% { opacity: 0; }
   100% { opacity: 1; }
+}
+
+/* Mobil uyumlu tasarım için media query */
+@media (max-width: 767.98px) {
+  .tablo-container {
+    font-size: 1em; /* Font boyutu mobil için küçültüldü */
+  }
+
+  .bașlık2, .bașlık4 {
+    font-size: 1.3em; /* Başlıklar için font boyutu küçültüldü */
+  }
+
+  .col-4, .col-3 {
+    width: 100%; /* Mobilde tüm kolonlar tam genişlik alacak şekilde ayarlandı */
+    justify-content: space-between; /* İçerikler arası boşluk sağlandı */
+  }
+
+  .blinking-dot {
+    height: 14px; /* Mobil için daha küçük boyutta */
+    width: 14px; /* Mobil için daha küçük boyutta */
+  }
+
+  .row.boşluk {
+    height: 10px; /* Mobil için daha büyük boşluk */
+  }
 }

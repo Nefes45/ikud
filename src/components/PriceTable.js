@@ -4,43 +4,66 @@ import Marquee from './Marquee';
 import Carousel from './Carousel';
 import { OperationsContext } from '../AdminPanel/context/OperationsContext';
 
-const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar }) => {
+const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar, isStreamOn, isFrozen }) => {
   const [prices, setPrices] = useState([]);
+  const [fixedPrices, setFixedPrices] = useState({});
   const { operations } = useContext(OperationsContext);
 
   useEffect(() => {
     let ws;
 
     const connectWebSocket = () => {
-      ws = new WebSocket('ws://152.89.36.148:24876');
+      if (!isFrozen && isStreamOn) {
+        ws = new WebSocket('ws://152.89.36.148:24876');
 
-      ws.onopen = () => {
-        console.log('WebSocket bağlantısı açıldı');
-      };
+        ws.onopen = () => console.log('WebSocket bağlantısı açıldı');
 
-      ws.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data);
-          const filteredData = data.filter(item => symbols.includes(item.Code));
-          const updatedData = filteredData.map(item => ({
-            ...item,
-            Bid: applyOperation(parseFloat(item.Bid), operations[item.Code]?.Bid),
-            Ask: applyOperation(parseFloat(item.Ask), operations[item.Code]?.Ask)
-          }));
-          setPrices(updatedData);
-        } catch (error) {
-          console.error('WebSocket mesajı ayrıştırılırken hata oluştu:', error);
-        }
-      };
+        ws.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            const filteredData = data.filter(item => symbols.includes(item.Code));
+            
+            const updatingSymbols = ['UHAS', '22AYAR', '18AYAR', '14AYAR'];
+            const updatedData = filteredData.map(item => ({
+              ...item,
+              Bid: applyOperation(parseFloat(item.Bid), operations[item.Code]?.Bid),
+              Ask: applyOperation(parseFloat(item.Ask), operations[item.Code]?.Ask)
+            }));
+            
+            const newPrices = {};
+            updatedData.forEach(item => {
+              if (updatingSymbols.includes(item.Code)) {
+                newPrices[item.Code] = item;
+              } else {
+                newPrices[item.Code] = fixedPrices[item.Code] || item;
+              }
+            });
 
-      ws.onclose = () => {
-        console.log('WebSocket bağlantısı kapandı, yeniden bağlanıyor...');
-        setTimeout(connectWebSocket, 30000);
-      };
+            setPrices(newPrices);
 
-      ws.onerror = (error) => {
-        console.error('WebSocket hatası:', error);
-      };
+            if (!isFrozen) {
+              setFixedPrices(prevFixedPrices => {
+                const updatedFixedPrices = { ...prevFixedPrices };
+                updatedData.forEach(item => {
+                  if (!updatingSymbols.includes(item.Code) && !prevFixedPrices[item.Code]) {
+                    updatedFixedPrices[item.Code] = item;
+                  }
+                });
+                return updatedFixedPrices;
+              });
+            }
+          } catch (error) {
+            console.error('WebSocket mesajı ayrıştırılırken hata oluştu:', error);
+          }
+        };
+
+        ws.onclose = () => {
+          console.log('WebSocket bağlantısı kapandı, yeniden bağlanıyor...');
+          setTimeout(connectWebSocket, 30000);
+        };
+
+        ws.onerror = (error) => console.error('WebSocket hatası:', error);
+      }
     };
 
     connectWebSocket();
@@ -50,7 +73,7 @@ const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar
         ws.close();
       }
     };
-  }, [symbols, operations]);
+  }, [symbols, operations, fixedPrices, isStreamOn, isFrozen]);
 
   const applyOperation = (price, operation) => {
     if (!operation) return price;
@@ -81,10 +104,10 @@ const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar
   };
 
   const getPriceData = (code) => {
-    const item = prices.find(item => item.Code === code);
+    const item = prices[code];
     if (!item) return { Bid: 0, Ask: 0 };
     return {
-      Bid: item.Bid.toFixed(2),  
+      Bid: item.Bid.toFixed(2),
       Ask: item.Ask.toFixed(2),
     };
   };

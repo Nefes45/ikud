@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Notification from './Notification';
 import '../styles/UserManagement.css';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,10 @@ const UserManagement = () => {
   const [notification, setNotification] = useState({ message: '', type: '' });
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("Current User:", currentUser);
+  }, [currentUser]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -106,6 +110,15 @@ const UserManagement = () => {
         <button className="save-button" onClick={handleAddUser}>Kullanıcı Ekle</button>
         <button className="logout-button" onClick={handleLogout}>Çıkış Yap</button>
       </div>
+      
+      {/* Ayarları Yönet Kısmı */}
+      {(currentUser?.role === 'Admin' || currentUser?.role === 'Moderatör') && (
+        <div className="settings-management">
+          <h2>Ayarları Yönet</h2>
+          {/* Ayarları yönet ile ilgili bileşenler ve işlemler buraya eklenebilir */}
+        </div>
+      )}
+
       <input
         type="text"
         placeholder="Kullanıcı Ara..."
@@ -137,7 +150,7 @@ const UserManagement = () => {
               </td>
               <td>
                 <button className="edit-button" onClick={() => handleEditUser(user)}>Düzenle</button>
-                {currentUser.role === 'Admin' && (
+                {currentUser?.role === 'Admin' && (
                   <button className="delete-button" onClick={() => handleDeleteUser(user.id)}>Sil</button>
                 )}
               </td>

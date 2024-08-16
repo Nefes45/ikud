@@ -12,7 +12,7 @@ const Header = () => (
         <span className="underline"></span>
       </h1>
     </div>
-    <img src={kudiImage} alt="İKUD" className="header-logo float-effect" />
+    <img src={kudiImage} alt="İKUD" className="header-logo kudi-logo float-effect" />
   </div>
 );
 

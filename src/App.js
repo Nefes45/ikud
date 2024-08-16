@@ -1,8 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './Login';
 import Signup from './Signup';
-import ForgotPassword from './ForgotPassword';  // ForgotPassword import edildi
+import ForgotPassword from './ForgotPassword';
 import PriceTable from './components/PriceTable';
 import Footer from './components/Footer';
 import Header from './components/Header';
@@ -19,6 +19,8 @@ const App = () => {
   const [originalPrices, setOriginalPrices] = useState({});
   const [show18Ayar, setShow18Ayar] = useState(true);
   const [show14Ayar, setShow14Ayar] = useState(true);
+  const [isStreamOn, setIsStreamOn] = useState(true);
+  const [isFrozen, setIsFrozen] = useState(false);
 
   useEffect(() => {
     const savedMarqueeText = localStorage.getItem('marqueeText');
@@ -53,6 +55,14 @@ const App = () => {
     localStorage.setItem('scrollAmount', amount);
   };
 
+  const handleTogglePrices = (isStreaming) => {
+    setIsStreamOn(isStreaming);
+  };
+
+  const handleFreezePrices = (isFreezing) => {
+    setIsFrozen(isFreezing);
+  };
+
   return (
     <UserProvider>
       <SlideProvider>
@@ -62,7 +72,7 @@ const App = () => {
               <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} /> {/* ForgotPassword rotası eklendi */}
+                <Route path="/forgot-password" element={<ForgotPassword />} /> 
                 <Route exact path="/" element={<PrivateRoute element={
                   <>
                     <Header />
@@ -73,6 +83,8 @@ const App = () => {
                       scrollAmount={scrollAmount} 
                       symbols={symbols} 
                       originalPrices={originalPrices}
+                      isStreamOn={isStreamOn}
+                      isFrozen={isFrozen}
                     />
                     <Footer symbols={symbols} />
                   </>
@@ -89,6 +101,10 @@ const App = () => {
                     setShow18Ayar={setShow18Ayar}
                     show14Ayar={show14Ayar}
                     setShow14Ayar={setShow14Ayar}
+                    isStreamOn={isStreamOn}
+                    isFrozen={isFrozen}
+                    handleTogglePrices={handleTogglePrices}
+                    handleFreezePrices={handleFreezePrices}
                   />
                 } />} />
               </Routes>
