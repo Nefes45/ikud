@@ -57,13 +57,13 @@
   border-right: 3px solid #FFFFFF;
 }
 
-.col-4.align-left, .col-4.c-left {
+.col-4.align-left, .col-4.c-left, .col-3.h.align-left {
   justify-content: flex-start;
   padding-left: 15px; /* Sütunu sola kaydırmak için padding azaltıldı */
 }
 
 /* Gri sütunları hizalamak için aşağıdaki kodlar eklendi */
-.col-4.p3.bg-light {
+.col-4.p3.bg-light, .col-3.p3.bg-light {
   padding-left:10px !important; /* Sola hizalamak için padding ayarlandı */
   padding-right: 0px !important; /* Sağ hizalama için padding ayarlandı */
   width: 33%; /* Tüm hücrelerin aynı genişlikte olması sağlandı */
