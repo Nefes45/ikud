@@ -84,7 +84,7 @@ const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar
     const item = prices.find(item => item.Code === code);
     if (!item) return { Bid: 0, Ask: 0 };
     return {
-      Bid: item.Bid.toFixed(2),  // Fiyatın iki ondalık basamağa sahip olmasını sağla
+      Bid: item.Bid.toFixed(2),  
       Ask: item.Ask.toFixed(2),
     };
   };
@@ -94,7 +94,10 @@ const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar
       <div className="row başlık2 text-center d-flex align-items-center justify-content-between">
         <div className="col-sm-8">
           <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
-            <div className="col-4 c-left">CANLI</div>
+            <div className="col-4 c-left">
+              <span className="blinking-dot"></span> {/* Yanıp sönen yeşil yuvarlak */}
+              CANLI
+            </div>
             <div className="col-4">ALIŞ</div>
             <div className="col-4">SATIŞ</div>
           </div>
@@ -103,11 +106,17 @@ const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('UHAS').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('UHAS').Ask)}</span></div>
           </div>
+
+          <div className="row boşluk"></div> {/* Boşluk eklendi */}
+          
           <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
             <div className={`col-4 p3 h align-left`}><span className="r">22</span> AYAR</div>
             <div className="col-4 p3 bg-light text-dark"><span>{formatNumber(getPriceData('22AYAR').Bid)}</span></div>
             <div className="col-4 p3"><span>{formatNumber(getPriceData('22AYAR').Ask)}</span></div>
           </div>
+
+          <div className="row boşluk"></div> {/* Boşluk eklendi */}
+          
           {show18Ayar && (
             <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
               <div className={`col-4 p3 h align-left`}><span className="r">18</span> AYAR</div>
@@ -122,6 +131,9 @@ const PriceTable = ({ marqueeText, scrollAmount, symbols, show18Ayar, show14Ayar
               <div className="col-4 p3"></div>
             </div>
           )}
+
+          <div className="row boşluk"></div> {/* Boşluk eklendi */}
+
           {show14Ayar && (
             <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
               <div className={`col-4 p3 h align-left`}><span className="r">14</span> AYAR</div>

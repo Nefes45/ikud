@@ -3,11 +3,11 @@ import '../styles/Footer.css';
 
 const Footer = ({ symbols }) => {
   const [footerData, setFooterData] = useState({
-    ons: { value: 0, direction: null },
-    usd: { value: 0, direction: null },
-    euro: { value: 0, direction: null },
-    parite: { value: 0, direction: null },
-    has: { value: 0, direction: null }
+    ons: { value: 0, direction: 'up' }, // Varsayılan olarak yukarı yönlü ok
+    usd: { value: 0, direction: 'up' },
+    euro: { value: 0, direction: 'up' },
+    parite: { value: 0, direction: 'up' },
+    has: { value: 0, direction: 'up' }
   });
 
   const roundToNearestTenth = (number) => {
@@ -16,12 +16,14 @@ const Footer = ({ symbols }) => {
 
   const createNewData = useCallback((newValue, oldValue) => {
     const roundedValue = roundToNearestTenth(newValue);
-    let direction = null;
+    let direction = oldValue > 0 ? 'up' : null; // Varsayılan olarak yukarı yönlü ok
+
     if (roundedValue > oldValue) {
       direction = 'up';
     } else if (roundedValue < oldValue) {
       direction = 'down';
     }
+
     return { value: roundedValue, direction };
   }, []);
 
@@ -91,17 +93,17 @@ const Footer = ({ symbols }) => {
   const getDirectionClass = (direction) => {
     if (direction === 'up') return 'up';
     if (direction === 'down') return 'down';
-    return '';
+    return 'up'; // Varsayılan olarak yukarı yönlü ok
   };
 
   return (
     <div className="footer-container">
       <div className="row">
-        <div className="col-sm p3">ONS <span className={getDirectionClass(footerData.ons.direction)}>{footerData.ons.value.toFixed(2)}</span></div>
-        <div className="col-sm p3">USD <span className={getDirectionClass(footerData.usd.direction)}>{footerData.usd.value.toFixed(2)}</span></div>
-        <div className="col-sm p3">EURO <span className={getDirectionClass(footerData.euro.direction)}>{footerData.euro.value.toFixed(2)}</span></div>
-        <div className="col-sm p3">€/$ <span className={getDirectionClass(footerData.parite.direction)}>{footerData.parite.value.toFixed(2)}</span></div>
-        <div className="col-sm p3">HAS <span className={getDirectionClass(footerData.has.direction)}>{footerData.has.value.toFixed(2)}</span></div>
+        <div className="col-sm p3">ONS: <span className={getDirectionClass(footerData.ons.direction)}>{footerData.ons.value.toFixed(2)}</span></div>
+        <div className="col-sm p3">USD: <span className={getDirectionClass(footerData.usd.direction)}>{footerData.usd.value.toFixed(2)}</span></div>
+        <div className="col-sm p3">EURO: <span className={getDirectionClass(footerData.euro.direction)}>{footerData.euro.value.toFixed(2)}</span></div>
+        <div className="col-sm p3">€/$: <span className={getDirectionClass(footerData.parite.direction)}>{footerData.parite.value.toFixed(2)}</span></div>
+        <div className="col-sm p3">HAS: <span className={getDirectionClass(footerData.has.direction)}>{footerData.has.value.toFixed(2)}</span></div>
       </div>
       <div className="row footer d-flex align-items-center justify-content-center">
         <div className="col-sm p4 text-end footer-text" style={{ fontFamily: "Times New Roman, Times, serif", fontSize: "15px" }}></div>
@@ -111,4 +113,3 @@ const Footer = ({ symbols }) => {
 };
 
 export default Footer;
- 

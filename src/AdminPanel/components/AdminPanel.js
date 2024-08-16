@@ -5,7 +5,7 @@ import Settings from './Settings';
 import PriceUpdateForm from './PriceUpdateForm';
 import UserManagement from './UserManagement';
 import PendingRequests from './PendingRequests';
-import PriceTable from '../../components/PriceTable';
+
 import UserProfile from './UserProfile';
 import MarqueeSettings from './MarqueeSettings';
 import SlideManagement from './SlideManagement';
@@ -87,7 +87,7 @@ const AdminPanel = ({ marqueeText, setMarqueeText, scrollAmount, setScrollAmount
                   <li>
                     <Link to="/admin/price-update"><i className="fas fa-dollar-sign fa-icon"></i>Fiyat Güncelleme</Link>
                   </li>
-                  <li><Link to="/admin/price-table"><i className="fas fa-table fa-icon"></i>Fiyat Tablosu</Link></li>
+                  
                   <li><Link to="/admin/user-management"><i className="fas fa-users fa-icon"></i>Kullanıcı Yönetimi</Link></li>
                   <li><Link to="/admin/marquee-settings"><i className="fas fa-newspaper fa-icon"></i>Kayan Yazı</Link></li>
                   <li><Link to="/admin/slide-management"><i className="fas fa-images fa-icon"></i>Slayt Yönetimi</Link></li>
@@ -109,7 +109,7 @@ const AdminPanel = ({ marqueeText, setMarqueeText, scrollAmount, setScrollAmount
                 <>
                   <Route path="settings" element={<Settings />} />
                   <Route path="price-update" element={<PriceUpdateForm />} />
-                  <Route path="price-table" element={<PriceTable />} />
+              
                   <Route path="user-management" element={<UserManagement />} />
                   <Route path="marquee-settings" element={<MarqueeSettings marqueeText={marqueeText} setMarqueeText={setMarqueeText} scrollAmount={scrollAmount} setScrollAmount={setScrollAmount} onSave={onSaveMarqueeSettings} />} />
                   <Route path="slide-management" element={<SlideManagement />} />

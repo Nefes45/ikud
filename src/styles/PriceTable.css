@@ -64,21 +64,55 @@
 
 /* Gri sütunları hizalamak için aşağıdaki kodlar eklendi */
 .col-4.p3.bg-light {
-  padding-left: 10px !important; /* Sola hizalamak için padding ayarlandı */
+  padding-left:10px !important; /* Sola hizalamak için padding ayarlandı */
   padding-right: 0px !important; /* Sağ hizalama için padding ayarlandı */
-  width: 30%; /* Tüm hücrelerin aynı genişlikte olması sağlandı */
+  width: 33%; /* Tüm hücrelerin aynı genişlikte olması sağlandı */
 }
 
 /* Dolar ve Euro için arka plan renkleri */
 .usd-bg {
-  background-color: rgb(69, 218, 223) !important;
+  background-color: rgb(70, 145, 145) !important;
 }
 
 .euro-bg {
-  background-color: rgb(69, 218, 223) !important;
+  background-color: rgb(70, 145, 145) !important;
 }
 
-.container-fluid .row > .col-sm-4, 
-.container-fluid .row > .col-sm {
+.container-fluid .row > .col-sm-8, 
+.container-fluid .row > .col-sm-4 {
   flex: 1 2 0px;
+}
+
+/* Slayt genişliği ve konumu ayarlandı */
+.slayt-container {
+  max-width: 100%; 
+  height: auto; 
+}
+
+/* Satırlar arasına boşluk eklemek için yeni sınıf tanımı */
+.row.boşluk {
+  height: 0px; /* Boşluk için yükseklik ayarlandı */
+}
+
+/* Yazılar arasına boşluk eklemek için */
+.h.align-left span {
+  margin-right: 10px; /* Boşluk miktarını artırmak için sağ margin ayarlandı */
+  letter-spacing: 2px; /* Harfler arasındaki boşluğu artırmak için */
+}
+
+/* Yanıp sönen yeşil yuvarlak için stil */
+.blinking-dot {
+  height: 24px; /* Boyutu büyütüldü */
+  width: 24px;  /* Boyutu büyütüldü */
+  background-color: green;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px; /* CANLI yazısından önce yerleştirildiği için sağa margin eklendi */
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
 }

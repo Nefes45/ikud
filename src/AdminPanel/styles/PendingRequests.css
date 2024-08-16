@@ -18,22 +18,22 @@
 
 .pending-requests-container th,
 .pending-requests-container td {
-  border: 1px solid #ddd;
+  border: 1px solid #0c0b0b;
   padding: 0.75rem;
   text-align: left;
 }
 
 .pending-requests-container th {
   background: #ffd700;
-  color: #333;
+  color: #0f0e0e;
 }
 
 .pending-requests-container td {
-  background: #fff;
+  background: #cfcccc;
 }
 
 .pending-requests-container tr:nth-child(even) {
-  background: #f9f9f9;
+  background: #993939;
 }
 
 /* Yeni eklemeler */
