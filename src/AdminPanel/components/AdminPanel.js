@@ -17,7 +17,7 @@ import AdminFooter from './AdminFooter';
 import '../styles/AdminPanel.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-const AdminPanel = ({ marqueeText, setMarqueeText, scrollAmount, setScrollAmount, onSaveMarqueeSettings, symbols, show18Ayar, setShow18Ayar, show14Ayar, setShow14Ayar }) => {
+const AdminPanel = ({ marqueeText, setMarqueeText, scrollAmount, setScrollAmount, onSaveMarqueeSettings, symbols, show18Ayar, setShow18Ayar, show14Ayar, setShow14Ayar, onTogglePrices, onFreezePrices }) => {
   const { currentUser, setCurrentUser, setActiveStatus } = useContext(UserContext);
   const navigate = useNavigate();
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -102,7 +102,7 @@ const AdminPanel = ({ marqueeText, setMarqueeText, scrollAmount, setScrollAmount
           </div>
           <div className="admin-panel-content" onClick={closeNotificationMenu}>
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<Dashboard onTogglePrices={onTogglePrices} onFreezePrices={onFreezePrices} />} />
               <Route path="profile/:userId" element={<UserProfile />} />
               {(currentUser.role === 'Admin' || currentUser.role === 'Moderatör') && (
                 <>

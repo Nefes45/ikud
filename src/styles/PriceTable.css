@@ -1,12 +1,14 @@
 .tablo-container {
-  background-color: #001F5B;
-  color: #FFFFFF;
+  background-color: #001f5b;
+  color: #ffffff;
   font-size: 1.3em; /* Font boyutu */
   font-weight: bold;
   width: 100%;
+  overflow: hidden; /* Taşmaları gizlemek için */
 }
 
-.başlık2, .başlık4 {
+.başlık2,
+.başlık4 {
   font-size: 1.6em; /* Font boyutu */
   font-weight: bold;
   padding: 0;
@@ -24,16 +26,18 @@
   text-align: center;
 }
 
-.başlık2 .bg-light, .başlık4 .bg-light {
+.başlık2 .bg-light,
+.başlık4 .bg-light {
   background-color: #b3b5b8 !important;
-  color: #343a40 !important;
+  color: #060707 !important;
   text-align: left;
   padding-left: 10px !important; /* Gri hücrelerin hizalanması için padding ayarlandı */
   padding-right: 10px !important; /* Sağ hizalama için padding ayarlandı */
   width: auto; /* Gri hücrelerin genişliği otomatik ayarlandı */
 }
 
-.başlık2 .d, .başlık4 .d {
+.başlık2 .d,
+.başlık4 .d {
   text-align: left;
   color: yellow;
   font-weight: bold !important;
@@ -43,28 +47,34 @@
   color: red;
 }
 
-.col-4, .col-3, .col-2, .col-1 {
+.col-4,
+.col-3,
+.col-2,
+.col-1 {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .border-bottom {
-  border-bottom: 3px solid #FFFFFF;
+  border-bottom: 3px solid #ffffff;
 }
 
 .border-right {
-  border-right: 3px solid #FFFFFF;
+  border-right: 3px solid #ffffff;
 }
 
-.col-4.align-left, .col-4.c-left, .col-3.h.align-left {
+.col-4.align-left,
+.col-4.c-left,
+.col-3.h.align-left {
   justify-content: flex-start;
   padding-left: 15px; /* Sütunu sola kaydırmak için padding azaltıldı */
 }
 
 /* Gri sütunları hizalamak için aşağıdaki kodlar eklendi */
-.col-4.p3.bg-light, .col-3.p3.bg-light {
-  padding-left:10px !important; /* Sola hizalamak için padding ayarlandı */
+.col-4.p3.bg-light,
+.col-3.p3.bg-light {
+  padding-left: 10px !important; /* Sola hizalamak için padding ayarlandı */
   padding-right: 0px !important; /* Sağ hizalama için padding ayarlandı */
   width: 33%; /* Tüm hücrelerin aynı genişlikte olması sağlandı */
 }
@@ -78,7 +88,7 @@
   background-color: rgb(70, 145, 145) !important;
 }
 
-.container-fluid .row > .col-sm-8, 
+.container-fluid .row > .col-sm-8,
 .container-fluid .row > .col-sm-4 {
   flex: 1 2 0px;
 }
@@ -86,8 +96,7 @@
 /* Slayt genişliği ve konumu ayarlandı */
 .slayt-container {
   max-width: 100%;
-  
-  height: auto; 
+  height: auto;
 }
 
 /* Satırlar arasına boşluk eklemek için yeni sınıf tanımı */
@@ -104,7 +113,7 @@
 /* Yanıp sönen yeşil yuvarlak için stil */
 .blinking-dot {
   height: 24px; /* Boyutu büyütüldü */
-  width: 24px;  /* Boyutu büyütüldü */
+  width: 24px; /* Boyutu büyütüldü */
   background-color: green;
   border-radius: 50%;
   display: inline-block;
@@ -113,9 +122,35 @@
 }
 
 @keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Fiyatların sürekli akmasını sağlayan animasyon */
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.tablo-container {
+  overflow: hidden; /* Taşmaları gizlemek için */
+  white-space: nowrap;
+}
+
+.price-row {
+  display: inline-block;
+  animation: scroll 30s linear infinite; /* Fiyatların sürekli akmasını sağlıyor */
 }
 
 /* Mobil uyumlu tasarım için media query */
@@ -124,11 +159,13 @@
     font-size: 1em; /* Font boyutu mobil için küçültüldü */
   }
 
-  .bașlık2, .bașlık4 {
+  .bașlık2,
+  .bașlık4 {
     font-size: 1.3em; /* Başlıklar için font boyutu küçültüldü */
   }
 
-  .col-4, .col-3 {
+  .col-4,
+  .col-3 {
     width: 100%; /* Mobilde tüm kolonlar tam genişlik alacak şekilde ayarlandı */
     justify-content: space-between; /* İçerikler arası boşluk sağlandı */
   }

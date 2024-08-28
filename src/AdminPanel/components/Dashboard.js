@@ -7,12 +7,16 @@ const Dashboard = ({ onTogglePrices, onFreezePrices }) => {
 
   const handleTogglePrices = () => {
     setIsStreamOn(!isStreamOn);
-    onTogglePrices(!isStreamOn);
+    if (onTogglePrices) {
+      onTogglePrices(!isStreamOn);
+    }
   };
 
   const handleFreezePrices = () => {
     setIsFrozen(!isFrozen);
-    onFreezePrices(!isFrozen);
+    if (onFreezePrices) {
+      onFreezePrices(!isFrozen);
+    }
   };
 
   return (

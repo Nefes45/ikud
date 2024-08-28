@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@900&family=Roboto:wght@400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@900&family=Roboto:wght@400&display=swap");
 
 .header-container {
   background: linear-gradient(135deg, #0d1f4b, #003087);
@@ -24,13 +24,15 @@
   animation: fadeIn 2s ease-in-out;
   transition: transform 0.3s ease, filter 0.3s ease;
   filter: drop-shadow(0 0 50px rgba(255, 255, 255, 0.5));
+  cursor: pointer; /* Bayrak tıklanabilir yapıldı */
 }
 
 .kudi-logo {
   width: 180px; /* Sadece kudiImage (log10.png) boyutu büyütüldü */
 }
 
-.header-logo:hover, .kudi-logo:hover {
+.header-logo:hover,
+.kudi-logo:hover {
   transform: scale(1.05) translateY(-3px);
   filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
 }
@@ -41,7 +43,7 @@
 
 .header-title {
   font-size: 42px;
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   font-weight: 900;
   position: relative;
   animation: slideIn 1.5s ease-out;
@@ -54,19 +56,14 @@
 
 .header-title .underline {
   display: block;
-  width: 0;
+  width: 100%; /* Sürekli aktif olacak şekilde genişliği ayarladık */
   height: 3px;
   background-color: white;
-  transition: width 0.5s;
   margin-top: 5px;
 }
 
-.header-title:hover .underline {
-  width: 100%;
-}
-
 .header-subtitle {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 18px;
   color: #c9d1d9;
   margin-top: 5px;
