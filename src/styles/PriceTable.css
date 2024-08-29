@@ -146,6 +146,8 @@
 .tablo-container {
   overflow: hidden; /* Taşmaları gizlemek için */
   white-space: nowrap;
+  object-fit: cover; /* Resimlerin çerçeveyi tam doldurması sağlandı */
+  object-position: center;
 }
 
 .price-row {

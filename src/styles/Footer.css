@@ -4,28 +4,32 @@
   color: white;
   padding: 20px;
   text-align: center;
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 40px;
-  font-weight: bold;
+  font-family: "Arial", sans-serif; /* Font Arial olarak değiştirildi */
+  font-size: 45px;
+  font-weight: bold; /* Tüm metinleri kalın yapar */
 }
 
 .footer-text {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 25px;
-  font-weight: bold;
+  font-family: "Arial", sans-serif; /* Font Arial olarak değiştirildi */
+  font-size: 40px; /* Font boyutu 40px olarak ayarlandı */
+  font-weight: bold; /* Yazılar kalın yapıldı */
 }
 
 .footer-container .col-sm span {
   display: inline-flex;
   align-items: center;
+  font-family: "Arial", sans-serif; /* Font Arial olarak değiştirildi */
+  font-style: normal;
+  font-size: 50px; /* Font boyutu 50px olarak ayarlandı */
+  font-weight: bold; /* Rakamları kalın yapar */
 }
 
 .footer-container .col-sm span::after {
-  content: '';
+  content: "";
   margin-left: 8px; /* İkon ile fiyat arasında boşluk */
   display: inline-block;
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
 }

@@ -1,5 +1,5 @@
 .pending-requests-container {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   padding: 2rem;
   background: #f4f4f9;
   border-radius: 12px;
@@ -40,4 +40,23 @@
 .pending-requests-container td:last-child {
   font-weight: bold;
   color: #007bff;
+}
+
+/* Sil butonu için stiller */
+.delete-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #e60000;
+}
+
+.delete-button:active {
+  background-color: #cc0000;
 }

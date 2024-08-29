@@ -1,58 +1,66 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from "react";
+import usersData from "./users.json"; // Kullanıcıları içeren JSON dosyasını içe aktarın
 
 export const UserContext = createContext();
 
-export const UserProvider = ({ children }) => {
-  const [users, setUsers] = useState([]);
+const UserProvider = ({ children }) => {
+  const [users, setUsers] = useState(usersData);
   const [currentUser, setCurrentUser] = useState(() => {
-    return JSON.parse(localStorage.getItem('currentUser')) || null;
+    return JSON.parse(localStorage.getItem("currentUser")) || null;
   });
 
-  const usersFilePath = '/users.json'; // JSON dosyasının yolu
-
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch(usersFilePath);
-        const data = await response.json();
-        setUsers(data);
-      } catch (error) {
-        console.error('Kullanıcıları çekerken hata oluştu:', error.message);
-      }
-    };
-
-    fetchUsers();
+    const savedUsers = JSON.parse(localStorage.getItem("users"));
+    if (savedUsers) {
+      setUsers(savedUsers);
+    }
   }, []);
 
   useEffect(() => {
-    if (currentUser) {
-      localStorage.setItem('currentUser', JSON.stringify(currentUser));
-    }
-  }, [currentUser]);
-
-  const setActiveStatus = (id, status) => {
-    const updatedUsers = users.map(user =>
-      user.id === id ? { ...user, isActive: status } : user
-    );
-    setUsers(updatedUsers);
-    // Burada localStorage veya bir dosya güncellemesi yapılabilir.
-  };
+    localStorage.setItem("users", JSON.stringify(users));
+  }, [users]);
 
   const addUser = (newUser) => {
-    const updatedUsers = [...users, { ...newUser, id: users.length ? users[users.length - 1].id + 1 : 1 }];
+    const newId = users.length ? users[users.length - 1].id + 1 : 1;
+    const updatedUsers = [...users, { ...newUser, id: newId }];
     setUsers(updatedUsers);
-    // Burada localStorage veya bir dosya güncellemesi yapılabilir.
+  };
+
+  const updateUser = (userId, updatedData) => {
+    const updatedUsers = users.map((user) =>
+      user.id === userId ? { ...user, ...updatedData } : user
+    );
+    setUsers(updatedUsers);
   };
 
   const deleteUser = (userId) => {
-    const updatedUsers = users.filter(user => user.id !== userId);
+    const updatedUsers = users.filter((user) => user.id !== userId);
     setUsers(updatedUsers);
-    // Burada localStorage veya bir dosya güncellemesi yapılabilir.
+  };
+
+  const setActiveStatus = (id, status) => {
+    const updatedUsers = users.map((user) =>
+      user.id === id ? { ...user, isActive: status } : user
+    );
+    setUsers(updatedUsers);
   };
 
   return (
-    <UserContext.Provider value={{ users, setUsers, currentUser, setCurrentUser, setActiveStatus, addUser, deleteUser }}>
+    <UserContext.Provider
+      value={{
+        users,
+        setUsers,
+        currentUser,
+        setCurrentUser,
+        setActiveStatus,
+        addUser,
+        updateUser,
+        deleteUser,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
 };
+
+export { UserProvider };

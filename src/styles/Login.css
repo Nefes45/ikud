@@ -2,8 +2,8 @@
 .login-body {
   margin: 0;
   padding: 0;
-  font-family: 'Roboto', sans-serif;
-  background: url('../img/back.jpg') no-repeat center center fixed;
+  font-family: "Roboto", sans-serif;
+  background: url("../img/back.jpg") no-repeat center center fixed;
   background-size: cover;
   display: flex;
   justify-content: center;
@@ -86,7 +86,9 @@
   margin-bottom: 1rem;
 }
 
-.login-button, .signup-button, .forgot-password-button {
+.login-button,
+.signup-button,
+.forgot-password-button {
   width: 100%;
   padding: 0.75rem;
   font-size: 1rem;
@@ -102,7 +104,8 @@
   color: #fff;
 }
 
-.login-button:hover, .signup-button:hover {
+.login-button:hover,
+.signup-button:hover {
   background-color: #0056b3;
   transform: scale(1.05); /* Butonlar hover durumunda büyür */
 }

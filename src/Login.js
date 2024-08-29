@@ -1,42 +1,47 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './styles/Login.css';
-import { UserContext } from './AdminPanel/context/UserContext';
-import logoImage from './img/logo.png';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "./styles/Login.css";
+import { UserContext } from "./AdminPanel/context/UserContext";
+import logoImage from "./img/logo.png";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { users, currentUser, setCurrentUser, setActiveStatus } = useContext(UserContext);
+  const { users, currentUser, setCurrentUser, setActiveStatus } =
+    useContext(UserContext);
 
   useEffect(() => {
     if (currentUser) {
-      navigate('/admin', { replace: true });
+      navigate("/admin", { replace: true });
     }
   }, [currentUser, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    const user = users.find(u => u.name.toLowerCase() === username.toLowerCase() && u.password === password);
+    setError("");
+    const user = users.find(
+      (u) =>
+        u.name.toLowerCase() === username.toLowerCase() &&
+        u.password === password
+    );
 
     if (user) {
       if (!user.isActive || !currentUser) {
         setCurrentUser(user);
-        localStorage.setItem('currentUser', JSON.stringify(user));
+        localStorage.setItem("currentUser", JSON.stringify(user));
         await setActiveStatus(user.id, true);
-        navigate('/admin', { replace: true });
+        navigate("/admin", { replace: true });
       } else {
-        setError('Kullanıcı zaten başka bir oturumda açık.');
+        setError("Kullanıcı zaten başka bir oturumda açık.");
       }
     } else {
-      setError('Geçersiz kullanıcı adı veya şifre');
+      setError("Geçersiz kullanıcı adı veya şifre");
     }
     setLoading(false);
   };
@@ -63,7 +68,7 @@ const Login = () => {
               <label>Şifre</label>
               <div className="password-container">
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -80,12 +85,20 @@ const Login = () => {
             </div>
             {error && <div className="error-message">{error}</div>}
             <button type="submit" className="login-button" disabled={loading}>
-              {loading ? 'Yükleniyor...' : 'Giriş Yap'}
+              {loading ? "Yükleniyor..." : "Giriş Yap"}
             </button>
-            <button type="button" className="signup-button" onClick={() => navigate('/signup')}>
+            <button
+              type="button"
+              className="signup-button"
+              onClick={() => navigate("/signup")}
+            >
               Üyelik İste
             </button>
-            <button type="button" className="forgot-password-button" onClick={() => navigate('/forgot-password')}>
+            <button
+              type="button"
+              className="forgot-password-button"
+              onClick={() => navigate("/forgot-password")}
+            >
               Şifremi Unuttum
             </button>
           </form>

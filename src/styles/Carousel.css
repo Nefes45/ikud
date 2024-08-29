@@ -6,7 +6,7 @@
   border-radius: 5px;
   overflow: hidden;
   margin-top: 10px;
-  display: flex;
+  display: block;
   align-items: center;
   justify-content: center;
 }
@@ -26,16 +26,19 @@
   height: 100%;
   object-fit: cover; /* Resimlerin çerçeveyi tam doldurması sağlandı */
   object-position: center; /* Resmin ortasının görünmesini sağladı */
+  display: block; /* Resimlerin blok olarak yerleştirilmesi sağlandı */
 }
 
 @media (max-width: 767.98px) {
   .carousel-container {
-    width: 100%; /* Mobil cihazlar için genişlik tam ekran yapıldı */
-    height: auto; /* Yükseklik içeriğe göre ayarlandı */
+    width: 930px; /* Mobil cihazlar için bile genişlik sabit kaldı */
+    height: 460px; /* Yükseklik sabit kaldı */
+    max-width: 930px; /* Maksimum genişlik sınırı korundu */
   }
 
   .carousel-image {
     object-fit: cover; /* Mobilde de görüntünün tam oturması sağlandı */
     object-position: center; /* Resmin ortasının görünmesini sağladı */
+    height: 460px; /* Yükseklik sabit tutuldu */
   }
 }

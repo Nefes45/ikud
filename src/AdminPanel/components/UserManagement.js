@@ -1,14 +1,26 @@
-import React, { useState, useContext, useEffect } from 'react';
-import Notification from './Notification';
-import '../styles/UserManagement.css';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../context/UserContext';
+import React, { useState, useContext, useEffect } from "react";
+import Notification from "./Notification";
+import "../styles/UserManagement.css";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 const UserManagement = () => {
-  const { users, addUser, deleteUser, currentUser, setActiveStatus, setCurrentUser } = useContext(UserContext);
-  const [newUser, setNewUser] = useState({ name: '', email: '', role: 'Kullanıcı', password: '' });
-  const [notification, setNotification] = useState({ message: '', type: '' });
-  const [searchTerm, setSearchTerm] = useState('');
+  const {
+    users,
+    addUser,
+    deleteUser,
+    currentUser,
+    setActiveStatus,
+    setCurrentUser,
+  } = useContext(UserContext);
+  const [newUser, setNewUser] = useState({
+    name: "",
+    email: "",
+    role: "Kullanıcı",
+    password: "",
+  });
+  const [notification, setNotification] = useState({ message: "", type: "" });
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,25 +34,40 @@ const UserManagement = () => {
 
   const handleAddUser = async () => {
     if (!newUser.name || !newUser.email || !newUser.password) {
-      setNotification({ message: 'İsim, e-posta ve şifre gereklidir.', type: 'error' });
+      setNotification({
+        message: "İsim, e-posta ve şifre gereklidir.",
+        type: "error",
+      });
       return;
     }
 
     try {
       await addUser(newUser);
-      setNewUser({ name: '', email: '', role: 'Kullanıcı', password: '' });
-      setNotification({ message: 'Kullanıcı başarıyla eklendi!', type: 'success' });
+      setNewUser({ name: "", email: "", role: "Kullanıcı", password: "" });
+      setNotification({
+        message: "Kullanıcı başarıyla eklendi!",
+        type: "success",
+      });
     } catch (error) {
-      setNotification({ message: 'Kullanıcı eklenirken hata oluştu.', type: 'error' });
+      setNotification({
+        message: "Kullanıcı eklenirken hata oluştu.",
+        type: "error",
+      });
     }
   };
 
   const handleDeleteUser = async (userId) => {
     try {
       await deleteUser(userId);
-      setNotification({ message: 'Kullanıcı başarıyla silindi!', type: 'success' });
+      setNotification({
+        message: "Kullanıcı başarıyla silindi!",
+        type: "success",
+      });
     } catch (error) {
-      setNotification({ message: 'Kullanıcı silinirken hata oluştu.', type: 'error' });
+      setNotification({
+        message: "Kullanıcı silinirken hata oluştu.",
+        type: "error",
+      });
     }
   };
 
@@ -51,13 +78,13 @@ const UserManagement = () => {
   const handleLogout = () => {
     if (currentUser) {
       setActiveStatus(currentUser.id, false);
-      localStorage.removeItem('currentUser');
+      localStorage.removeItem("currentUser");
       setCurrentUser(null);
-      navigate('/login');
+      navigate("/login");
     }
   };
 
-  const filteredUsers = users.filter(user =>
+  const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -90,7 +117,12 @@ const UserManagement = () => {
         </div>
         <div className="form-group">
           <label htmlFor="role">Rol</label>
-          <select name="role" id="role" value={newUser.role} onChange={handleInputChange}>
+          <select
+            name="role"
+            id="role"
+            value={newUser.role}
+            onChange={handleInputChange}
+          >
             <option value="Admin">Admin</option>
             <option value="Moderatör">Moderatör</option>
             <option value="Kullanıcı">Kullanıcı</option>
@@ -107,12 +139,16 @@ const UserManagement = () => {
             placeholder="Şifre"
           />
         </div>
-        <button className="save-button" onClick={handleAddUser}>Kullanıcı Ekle</button>
-        <button className="logout-button" onClick={handleLogout}>Çıkış Yap</button>
+        <button className="save-button" onClick={handleAddUser}>
+          Kullanıcı Ekle
+        </button>
+        <button className="logout-button" onClick={handleLogout}>
+          Çıkış Yap
+        </button>
       </div>
-      
+
       {/* Ayarları Yönet Kısmı */}
-      {(currentUser?.role === 'Admin' || currentUser?.role === 'Moderatör') && (
+      {(currentUser?.role === "Admin" || currentUser?.role === "Moderatör") && (
         <div className="settings-management">
           <h2>Ayarları Yönet</h2>
           {/* Ayarları yönet ile ilgili bileşenler ve işlemler buraya eklenebilir */}
@@ -144,14 +180,28 @@ const UserManagement = () => {
               <td>{user.email}</td>
               <td>{user.role}</td>
               <td>
-                <span className={user.isActive ? 'status-active' : 'status-inactive'}>
-                  {user.isActive ? 'Aktif' : 'Pasif'}
+                <span
+                  className={
+                    user.isActive ? "status-active" : "status-inactive"
+                  }
+                >
+                  {user.isActive ? "Aktif" : "Pasif"}
                 </span>
               </td>
               <td>
-                <button className="edit-button" onClick={() => handleEditUser(user)}>Düzenle</button>
-                {currentUser?.role === 'Admin' && (
-                  <button className="delete-button" onClick={() => handleDeleteUser(user.id)}>Sil</button>
+                <button
+                  className="edit-button"
+                  onClick={() => handleEditUser(user)}
+                >
+                  Düzenle
+                </button>
+                {currentUser?.role === "Admin" && (
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDeleteUser(user.id)}
+                  >
+                    Sil
+                  </button>
                 )}
               </td>
             </tr>
