@@ -14,11 +14,13 @@ export const OperationsProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    const savedOperations = localStorage.getItem(localStorageKey);
-    if (savedOperations) {
-      setOperations(JSON.parse(savedOperations));
+    if (userId) {
+      const savedOperations = localStorage.getItem(localStorageKey);
+      if (savedOperations) {
+        setOperations(JSON.parse(savedOperations));
+      }
     }
-  }, [userId, localStorageKey]); // `localStorageKey`'i bağımlılık dizisine ekledik
+  }, [userId, localStorageKey]);
 
   const updateOperations = (newOperations) => {
     setOperations((prevOperations) => {
