@@ -1,5 +1,5 @@
-import React, { createContext, useState, useContext } from 'react';
-import { UserContext } from './UserContext'; // Kullanıcının kimliğini almak için UserContext'i ekleyin
+import React, { createContext, useState, useContext, useEffect } from "react";
+import { UserContext } from "./UserContext"; // Kullanıcının kimliğini almak için UserContext'i ekleyin
 
 export const OperationsContext = createContext();
 
@@ -13,11 +13,17 @@ export const OperationsProvider = ({ children }) => {
     return savedOperations ? JSON.parse(savedOperations) : {};
   });
 
+  useEffect(() => {
+    const savedOperations = localStorage.getItem(localStorageKey);
+    if (savedOperations) {
+      setOperations(JSON.parse(savedOperations));
+    }
+  }, [userId, localStorageKey]); // `localStorageKey`'i bağımlılık dizisine ekledik
+
   const updateOperations = (newOperations) => {
-    setOperations(prevOperations => {
+    setOperations((prevOperations) => {
       const updatedOperations = { ...prevOperations, ...newOperations };
       localStorage.setItem(localStorageKey, JSON.stringify(updatedOperations));
-      localStorage.setItem(`priceUpdateNotification_${userId}`, 'true'); // Kullanıcıya özel fiyat güncelleme bildirimi
       return updatedOperations;
     });
   };
@@ -28,7 +34,13 @@ export const OperationsProvider = ({ children }) => {
   };
 
   return (
-    <OperationsContext.Provider value={{ operations, updateOperations, resetOperations }}>
+    <OperationsContext.Provider
+      value={{
+        operations,
+        updateOperations,
+        resetOperations,
+      }}
+    >
       {children}
     </OperationsContext.Provider>
   );

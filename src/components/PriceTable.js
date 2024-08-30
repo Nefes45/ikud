@@ -14,7 +14,6 @@ const PriceTable = ({
   isFrozen,
 }) => {
   const [prices, setPrices] = useState({});
-  const [fixedPrices, setFixedPrices] = useState({});
   const { operations } = useContext(OperationsContext);
 
   useEffect(() => {
@@ -33,44 +32,21 @@ const PriceTable = ({
               symbols.includes(item.Code)
             );
 
-            const updatingSymbols = ["UHAS", "22AYAR", "18AYAR", "14AYAR"];
-            const updatedData = filteredData.map((item) => ({
-              ...item,
-              Bid: applyOperation(
-                parseFloat(item.Bid),
-                operations[item.Code]?.Bid
-              ),
-              Ask: applyOperation(
-                parseFloat(item.Ask),
-                operations[item.Code]?.Ask
-              ),
-            }));
-
             const newPrices = {};
-            updatedData.forEach((item) => {
-              if (updatingSymbols.includes(item.Code)) {
-                newPrices[item.Code] = item;
-              } else {
-                newPrices[item.Code] = fixedPrices[item.Code] || item;
+            filteredData.forEach((item) => {
+              if (
+                item.Code === "UHAS" ||
+                item.Code === "USDTRY" ||
+                item.Code === "EURTRY"
+              ) {
+                newPrices[item.Code] = {
+                  Bid: parseFloat(item.Bid) || 0,
+                  Ask: parseFloat(item.Ask) || 0,
+                };
               }
             });
 
             setPrices(newPrices);
-
-            if (!isFrozen) {
-              setFixedPrices((prevFixedPrices) => {
-                const updatedFixedPrices = { ...prevFixedPrices };
-                updatedData.forEach((item) => {
-                  if (
-                    !updatingSymbols.includes(item.Code) &&
-                    !prevFixedPrices[item.Code]
-                  ) {
-                    updatedFixedPrices[item.Code] = item;
-                  }
-                });
-                return updatedFixedPrices;
-              });
-            }
           } catch (error) {
             console.error(
               "WebSocket mesajı ayrıştırılırken hata oluştu:",
@@ -95,44 +71,38 @@ const PriceTable = ({
         ws.close();
       }
     };
-  }, [symbols, operations, fixedPrices, isStreamOn, isFrozen]);
-
-  const applyOperation = (price, operation) => {
-    if (!operation) return price;
-    const match = operation.match(/([-+*/])(\d+(\.\d+)?)/);
-    if (!match) return price;
-    const operator = match[1];
-    const value = parseFloat(match[2]);
-    switch (operator) {
-      case "+":
-        return price + value;
-      case "-":
-        return price - value;
-      case "*":
-        return price * value;
-      case "/":
-        return price / value;
-      default:
-        return price;
-    }
-  };
+  }, [symbols, isStreamOn, isFrozen]);
 
   const formatNumber = (number) => {
-    const roundedNumber = Math.ceil(number * 10) / 10;
     return new Intl.NumberFormat("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-    }).format(roundedNumber);
+    }).format(number);
   };
 
   const getPriceData = (code) => {
-    const item = prices[code];
-    if (!item) return { Bid: 0, Ask: 0 };
+    const uhasItem = prices["UHAS"];
+    const currencyItem = prices[code];
+
+    if (code === "USDTRY" || code === "EURTRY") {
+      return {
+        Bid: operations[code]?.Bid || currencyItem?.Bid || 0, // Öncelikle operations değerini kullanıyoruz
+        Ask: operations[code]?.Ask || currencyItem?.Ask || 0,
+      };
+    }
+
+    if (!uhasItem) return { Bid: 0, Ask: 0 };
+
+    const operationBidAdjustment = parseFloat(operations?.[code]?.Bid || 1);
+    const operationAskAdjustment = parseFloat(operations?.[code]?.Ask || 1);
+
     return {
-      Bid: item.Bid.toFixed(2),
-      Ask: item.Ask.toFixed(2),
+      Bid: (uhasItem.Bid * operationBidAdjustment).toFixed(2),
+      Ask: (uhasItem.Ask * operationAskAdjustment).toFixed(2),
     };
   };
+
+  const uhasData = getPriceData("UHAS");
 
   return (
     <div className="tablo-container container-fluid">
@@ -140,9 +110,7 @@ const PriceTable = ({
         <div className="col-sm-8">
           <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
             <div className="col-4 c-left">
-              <span className="blinking-dot"></span>{" "}
-              {/* Yanıp sönen yeşil yuvarlak */}
-              CANLI
+              <span className="blinking-dot"></span> CANLI
             </div>
             <div className="col-4">ALIŞ</div>
             <div className="col-4">SATIŞ</div>
@@ -152,13 +120,13 @@ const PriceTable = ({
               <span className="r">24</span> HAS
             </div>
             <div className="col-4 p3 bg-light text-dark">
-              <span>{formatNumber(getPriceData("UHAS").Bid)}</span>
+              <span>{formatNumber(uhasData.Bid)}</span>
             </div>
             <div className="col-4 p3">
-              <span>{formatNumber(getPriceData("UHAS").Ask)}</span>
+              <span>{formatNumber(uhasData.Ask)}</span>
             </div>
           </div>
-          <div className="row boşluk"></div> {/* Boşluk eklendi */}
+          <div className="row boşluk"></div>
           <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
             <div className={`col-4 p3 h align-left`}>
               <span className="r">22</span> AYAR
@@ -170,7 +138,7 @@ const PriceTable = ({
               <span>{formatNumber(getPriceData("22AYAR").Ask)}</span>
             </div>
           </div>
-          <div className="row boşluk"></div> {/* Boşluk eklendi */}
+          <div className="row boşluk"></div>
           {show18Ayar && (
             <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
               <div className={`col-4 p3 h align-left`}>
@@ -195,7 +163,7 @@ const PriceTable = ({
               <div className="col-4 p3"></div>
             </div>
           )}
-          <div className="row boşluk"></div> {/* Boşluk eklendi */}
+          <div className="row boşluk"></div>
           {show14Ayar && (
             <div className="row border-bottom başlık2 text-center d-flex align-items-center justify-content-between">
               <div className={`col-4 p3 h align-left`}>
