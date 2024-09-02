@@ -25,6 +25,7 @@ export const OperationsProvider = ({ children }) => {
   const updateOperations = (newOperations) => {
     setOperations((prevOperations) => {
       const updatedOperations = { ...prevOperations, ...newOperations };
+      console.log("Updating operations:", updatedOperations); // Güncelleme kontrolü
       localStorage.setItem(localStorageKey, JSON.stringify(updatedOperations));
       return updatedOperations;
     });

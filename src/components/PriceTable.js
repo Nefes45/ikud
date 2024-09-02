@@ -74,20 +74,37 @@ const PriceTable = ({
   }, [symbols, isStreamOn, isFrozen]);
 
   const formatNumber = (number) => {
-    return new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(number);
+    const numericValue = parseFloat(number);
+    if (isNaN(numericValue)) {
+      return number; // Eğer sayı değilse, olduğu gibi döndür.
+    }
+
+    // Sayıyı en yakın 0.10 dilimine yuvarla
+    const roundedNumber = Math.ceil(numericValue * 10) / 10;
+
+    return roundedNumber.toFixed(2); // Sonucu iki ondalık basamak ile döndür
   };
 
   const getPriceData = (code) => {
     const uhasItem = prices["UHAS"];
     const currencyItem = prices[code];
 
+    console.log("Operations Data:", operations);
+    console.log("Currency Item:", currencyItem);
+
     if (code === "USDTRY" || code === "EURTRY") {
+      const baseBid = parseFloat(currencyItem?.Bid || 0);
+      const baseAsk = parseFloat(currencyItem?.Ask || 0);
+
+      const operationBidAdjustment = parseFloat(operations?.[code]?.Bid || 0);
+      const operationAskAdjustment = parseFloat(operations?.[code]?.Ask || 0);
+
+      const bid = baseBid + operationBidAdjustment;
+      const ask = baseAsk + operationAskAdjustment;
+
       return {
-        Bid: operations[code]?.Bid || currencyItem?.Bid || 0, // Öncelikle operations değerini kullanıyoruz
-        Ask: operations[code]?.Ask || currencyItem?.Ask || 0,
+        Bid: formatNumber(bid),
+        Ask: formatNumber(ask),
       };
     }
 
@@ -97,8 +114,8 @@ const PriceTable = ({
     const operationAskAdjustment = parseFloat(operations?.[code]?.Ask || 1);
 
     return {
-      Bid: (uhasItem.Bid * operationBidAdjustment).toFixed(2),
-      Ask: (uhasItem.Ask * operationAskAdjustment).toFixed(2),
+      Bid: formatNumber(uhasItem.Bid * operationBidAdjustment),
+      Ask: formatNumber(uhasItem.Ask * operationAskAdjustment),
     };
   };
 

@@ -9,10 +9,7 @@ const PriceUpdateForm = () => {
     resetOperations,
   } = useContext(OperationsContext);
   const [operations, setOperations] = useState({});
-  const [mathOperations, setMathOperations] = useState({
-    USDTRY: { bidOperation: "+", bidValue: 0, askOperation: "+", askValue: 0 },
-    EURTRY: { bidOperation: "+", bidValue: 0, askOperation: "+", askValue: 0 },
-  });
+  const [mathOperation, setMathOperation] = useState("+"); // İşlem türünü saklamak için state
 
   useEffect(() => {
     setOperations(contextOperations);
@@ -31,30 +28,25 @@ const PriceUpdateForm = () => {
     }));
   };
 
-  const handleMathOperationChange = (e, key, type, fieldType) => {
-    const value = e.target.value;
-    setMathOperations((prev) => ({
-      ...prev,
-      [key]: {
-        ...prev[key],
-        [`${fieldType}${type}`]: value,
-      },
-    }));
+  const handleMathOperationChange = (e) => {
+    setMathOperation(e.target.value); // İşlem türünü güncelle
   };
 
-  const applyMathOperation = (price, operation, value) => {
-    const numericValue = parseFloat(value) || 0;
-    switch (operation) {
+  const applyMathOperation = (baseValue, inputValue) => {
+    const base = parseFloat(baseValue) || 0;
+    const input = parseFloat(inputValue) || 0;
+
+    switch (mathOperation) {
       case "+":
-        return price + numericValue;
+        return base + input;
       case "-":
-        return price - numericValue;
+        return base - input;
       case "*":
-        return price * numericValue;
+        return base * input;
       case "/":
-        return price / numericValue;
+        return input !== 0 ? base / input : 0; // Bölme işleminde sıfıra bölmeyi önlemek için kontrol
       default:
-        return price;
+        return base;
     }
   };
 
@@ -63,51 +55,30 @@ const PriceUpdateForm = () => {
 
     const updatedOperations = { ...operations };
 
-    // USDTRY ve EURTRY için alış ve satış işlemlerini ayrı ayrı uygula
+    // USD/TRY ve EUR/TRY için işlem uygulama
     ["USDTRY", "EURTRY"].forEach((key) => {
       if (updatedOperations[key]) {
-        const bidValue = parseFloat(updatedOperations[key].Bid || 0);
-        const askValue = parseFloat(updatedOperations[key].Ask || 0);
-
-        const updatedBid = applyMathOperation(
-          bidValue,
-          mathOperations[key]?.bidOperation || "+",
-          mathOperations[key]?.bidValue || 0
-        );
-        const updatedAsk = applyMathOperation(
-          askValue,
-          mathOperations[key]?.askOperation || "+",
-          mathOperations[key]?.askValue || 0
-        );
-
-        updatedOperations[key].Bid = updatedBid.toFixed(2);
-        updatedOperations[key].Ask = updatedAsk.toFixed(2);
+        const currentOperation = updatedOperations[key];
+        updatedOperations[key] = {
+          Bid: applyMathOperation(
+            contextOperations[key]?.Bid || 0,
+            currentOperation.Bid
+          ),
+          Ask: applyMathOperation(
+            contextOperations[key]?.Ask || 0,
+            currentOperation.Ask
+          ),
+        };
       }
     });
 
+    console.log("Updated Operations:", updatedOperations);
     updateOperations(updatedOperations); // Context fonksiyonunu çağırarak state'i günceller
   };
 
   const handleReset = () => {
-    setOperations({
-      // Diğer alanlar için de aynı şekilde ekleyebilirsiniz
-    });
-
-    setMathOperations({
-      USDTRY: {
-        bidOperation: "+",
-        bidValue: 0,
-        askOperation: "+",
-        askValue: 0,
-      },
-      EURTRY: {
-        bidOperation: "+",
-        bidValue: 0,
-        askOperation: "+",
-        askValue: 0,
-      },
-    });
-
+    setOperations({});
+    setMathOperation("+"); // Reset işlem türü
     resetOperations(); // Context fonksiyonunu çağırarak state'i sıfırlar
   };
 
@@ -124,11 +95,28 @@ const PriceUpdateForm = () => {
     { label: "E Yarım", key: "EYARIM" },
     { label: "E Ziynet", key: "EZIYNET" },
     { label: "E Ata", key: "EATA" },
+    { label: "USD/TRY", key: "USDTRY" },
+    { label: "EUR/TRY", key: "EURTRY" },
   ];
 
   return (
     <form onSubmit={handleSubmit} className="price-update-form-container">
       <h2>Fiyat Güncelleme Formu</h2>
+      <div className="operation-type-selector">
+        <label htmlFor="mathOperation">
+          USD/TRY ve EUR/TRY için İşlem Türü:
+        </label>
+        <select
+          id="mathOperation"
+          value={mathOperation}
+          onChange={handleMathOperationChange}
+        >
+          <option value="+">Toplama (+)</option>
+          <option value="-">Çıkarma (-)</option>
+          <option value="*">Çarpma (*)</option>
+          <option value="/">Bölme (/)</option>
+        </select>
+      </div>
       {formFields.map((field) => (
         <div className="form-group" key={field.key}>
           <label htmlFor={`${field.key}_Bid`}>{field.label} Alış:</label>
@@ -146,56 +134,6 @@ const PriceUpdateForm = () => {
             placeholder="Örn: 54"
             value={operations[field.key]?.Ask || ""}
             onChange={(e) => handleOperationChange(e, field.key, "Ask")}
-          />
-        </div>
-      ))}
-      {/* Sadece USDTRY ve EURTRY için matematiksel işlem alanları */}
-      {["USDTRY", "EURTRY"].map((key) => (
-        <div className="form-group" key={key}>
-          <label htmlFor={`${key}_BidOperation`}>
-            {key === "USDTRY" ? "Dolar Alış" : "Euro Alış"} İşlem Türü:
-          </label>
-          <select
-            id={`${key}_BidOperation`}
-            value={mathOperations[key].bidOperation}
-            onChange={(e) =>
-              handleMathOperationChange(e, key, "Operation", "bid")
-            }
-          >
-            <option value="+">+</option>
-            <option value="-">-</option>
-            <option value="*">*</option>
-            <option value="/">/</option>
-          </select>
-          <input
-            type="text"
-            id={`${key}_BidValue`}
-            placeholder="İşlem değeri"
-            value={mathOperations[key].bidValue}
-            onChange={(e) => handleMathOperationChange(e, key, "Value", "bid")}
-          />
-
-          <label htmlFor={`${key}_AskOperation`}>
-            {key === "USDTRY" ? "Dolar Satış" : "Euro Satış"} İşlem Türü:
-          </label>
-          <select
-            id={`${key}_AskOperation`}
-            value={mathOperations[key].askOperation}
-            onChange={(e) =>
-              handleMathOperationChange(e, key, "Operation", "ask")
-            }
-          >
-            <option value="+">+</option>
-            <option value="-">-</option>
-            <option value="*">*</option>
-            <option value="/">/</option>
-          </select>
-          <input
-            type="text"
-            id={`${key}_AskValue`}
-            placeholder="İşlem değeri"
-            value={mathOperations[key].askValue}
-            onChange={(e) => handleMathOperationChange(e, key, "Value", "ask")}
           />
         </div>
       ))}
