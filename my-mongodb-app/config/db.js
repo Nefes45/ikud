@@ -2,17 +2,11 @@ const mongoose = require("mongoose");
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(
-      process.env.MONGO_URI || "mongodb://localhost:27017/myDatabase",
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
-    );
+    await mongoose.connect(process.env.MONGO_URI);
     console.log("MongoDB bağlantısı başarılı.");
-  } catch (err) {
-    console.error("MongoDB bağlantısı başarısız:", err.message);
-    process.exit(1);
+  } catch (error) {
+    console.error("MongoDB bağlantı hatası:", error.message);
+    process.exit(1); // Hata durumunda uygulamayı kapat
   }
 };
 

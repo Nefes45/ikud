@@ -1,37 +1,50 @@
-[
-  {
-    "id": 1,
-    "name": "ozcan",
-    "email": "ozcan@example.com",
-    "role": "Admin",
-    "password": "1234"
+[{
+  "_id": {
+    "$oid": "66d6b292832e32e87ac8fdc0"
   },
-  {
-    "name": "emre",
-    "email": "hasan@hotmail.com",
-    "role": "Kullanıcı",
-    "password": "1234",
-    "id": 2
+  "id": 1,
+  "name": "ozcan",
+  "email": "ozcan@example.com",
+  "role": "Admin",
+  "password": "1234"
+},
+{
+  "_id": {
+    "$oid": "66d6b292832e32e87ac8fdc1"
   },
-  {
-    "name": "anıl",
-    "email": "anıl@hotmail.com",
-    "role": "Moderatör",
-    "password": "1234",
-    "id": 3
+  "name": "emre",
+  "email": "hasan@hotmail.com",
+  "role": "Kullanıcı",
+  "password": "1234",
+  "id": 2
+},
+{
+  "_id": {
+    "$oid": "66d6b292832e32e87ac8fdc2"
   },
-  {
-    "name": "erkan",
-    "email": "erkan@hotmail.com",
-    "role": "Admin",
-    "password": "1234",
-    "id": 4
+  "name": "anıl",
+  "email": "anıl@hotmail.com",
+  "role": "Moderatör",
+  "password": "1234",
+  "id": 3
+},
+{
+  "_id": {
+    "$oid": "66d6b292832e32e87ac8fdc3"
   },
-  {
-    "name": "Erkan",
-    "email": "kadsaksd@hotmail.com",
-    "role": "Admin",
-    "password": "12334",
-    "id": 5
-  }
-]
+  "name": "erkan",
+  "email": "erkan@hotmail.com",
+  "role": "Admin",
+  "password": "1234",
+  "id": 4
+},
+{
+  "_id": {
+    "$oid": "66d6b292832e32e87ac8fdc4"
+  },
+  "name": "Erkan",
+  "email": "kadsaksd@hotmail.com",
+  "role": "Admin",
+  "password": "12334",
+  "id": 5
+}]

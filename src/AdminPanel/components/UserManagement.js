@@ -13,12 +13,14 @@ const UserManagement = () => {
     setActiveStatus,
     setCurrentUser,
   } = useContext(UserContext);
+
   const [newUser, setNewUser] = useState({
     name: "",
     email: "",
     role: "Kullanıcı",
     password: "",
   });
+
   const [notification, setNotification] = useState({ message: "", type: "" });
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
@@ -72,21 +74,24 @@ const UserManagement = () => {
   };
 
   const handleEditUser = (user) => {
-    navigate(`/admin/profile/${user.id}`);
+    navigate(`/admin/profile/${user._id}`);
   };
 
   const handleLogout = () => {
     if (currentUser) {
-      setActiveStatus(currentUser.id, false);
+      setActiveStatus(currentUser._id, false);
       localStorage.removeItem("currentUser");
       setCurrentUser(null);
       navigate("/login");
     }
   };
 
-  const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredUsers = users.filter((user) => {
+    const name = user.name ? user.name.toLowerCase() : "";
+    const email = user.email ? user.email.toLowerCase() : "";
+    const search = searchTerm.toLowerCase();
+    return name.includes(search) || email.includes(search);
+  });
 
   return (
     <div className="user-management-container">
@@ -174,8 +179,8 @@ const UserManagement = () => {
         </thead>
         <tbody>
           {filteredUsers.map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
+            <tr key={user._id}>
+              <td>{user._id}</td>
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.role}</td>
@@ -198,7 +203,7 @@ const UserManagement = () => {
                 {currentUser?.role === "Admin" && (
                   <button
                     className="delete-button"
-                    onClick={() => handleDeleteUser(user.id)}
+                    onClick={() => handleDeleteUser(user._id)}
                   >
                     Sil
                   </button>

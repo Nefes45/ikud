@@ -6,14 +6,13 @@ import logoImage from "./img/logo.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [identifier, setIdentifier] = useState(""); // Kullanıcı adı veya email
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { users, currentUser, setCurrentUser, setActiveStatus } =
-    useContext(UserContext);
+  const { loginUser, currentUser } = useContext(UserContext);
 
   useEffect(() => {
     if (currentUser) {
@@ -25,25 +24,19 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const user = users.find(
-      (u) =>
-        u.name.toLowerCase() === username.toLowerCase() &&
-        u.password === password
-    );
 
-    if (user) {
-      if (!user.isActive || !currentUser) {
-        setCurrentUser(user);
-        localStorage.setItem("currentUser", JSON.stringify(user));
-        await setActiveStatus(user.id, true);
-        navigate("/admin", { replace: true });
-      } else {
-        setError("Kullanıcı zaten başka bir oturumda açık.");
-      }
-    } else {
-      setError("Geçersiz kullanıcı adı veya şifre");
+    try {
+      // loginUser fonksiyonuna identifier (email veya username) ve şifre gönderiliyor
+      await loginUser(identifier, password);
+      navigate("/admin", { replace: true });
+    } catch (error) {
+      setError(
+        error.response?.data?.error ||
+          "Giriş başarısız, lütfen bilgilerinizi kontrol edin."
+      );
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -54,14 +47,14 @@ const Login = () => {
           <h2>Giriş Yap</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>Kullanıcı Adı</label>
+              <label>Kullanıcı Adı veya Email</label>
               <input
                 type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)}
                 required
                 autoComplete="username"
-                placeholder="Kullanıcı adı"
+                placeholder="Kullanıcı adı veya email"
               />
             </div>
             <div className="form-group">
