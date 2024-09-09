@@ -6,6 +6,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.6.0",
     "axios": "^1.7.2",
+    "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.3",
     "canvas-confetti": "^1.9.3",
     "chart.js": "^4.4.3",
@@ -16,6 +17,7 @@
     "formik": "^2.4.6",
     "http-proxy-middleware": "^3.0.0",
     "jquery": "^3.7.1",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.0",
     "mysql2": "^3.11.0",
     "path-browserify": "^1.0.1",
@@ -40,7 +42,8 @@
     "eject": "react-scripts eject",
     "server": "node server.js",
     "pm2": "pm2 start ecosystem.config.js --env production",
-    "deploy": "npm run build && npm run server"
+    "deploy": "npm run build && npm run server",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "eslintConfig": {
     "extends": [
@@ -66,6 +69,10 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-react": "^7.24.7",
     "chai": "^5.1.1",
+    "eslint": "^8.50.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.32.2",
     "mocha": "^10.7.3",
     "pm2": "^5.3.0",
     "source-map-loader": "^5.0.0",

@@ -6,12 +6,12 @@ import { UserContext } from "../context/UserContext";
 
 const UserManagement = () => {
   const {
-    users,
+    users = [],
     addUser,
     deleteUser,
     currentUser,
-    setActiveStatus,
     setCurrentUser,
+    setActiveStatus,
   } = useContext(UserContext);
 
   const [newUser, setNewUser] = useState({
@@ -22,7 +22,7 @@ const UserManagement = () => {
   });
 
   const [notification, setNotification] = useState({ message: "", type: "" });
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // Kullanıcı arama terimi
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -74,18 +74,36 @@ const UserManagement = () => {
   };
 
   const handleEditUser = (user) => {
-    navigate(`/admin/profile/${user._id}`);
+    navigate(`/admin/profile/${user.id}`);
   };
 
   const handleLogout = () => {
     if (currentUser) {
-      setActiveStatus(currentUser._id, false);
       localStorage.removeItem("currentUser");
       setCurrentUser(null);
       navigate("/login");
     }
   };
 
+  // Kullanıcı durumunu güncelle
+  const handleSetActiveStatus = async (userId, isActive) => {
+    try {
+      await setActiveStatus(userId, isActive);
+      setNotification({
+        message: `Kullanıcı durumu ${
+          isActive ? "aktif" : "pasif"
+        } olarak güncellendi!`,
+        type: "success",
+      });
+    } catch (error) {
+      setNotification({
+        message: "Kullanıcı durumu güncellenirken hata oluştu.",
+        type: "error",
+      });
+    }
+  };
+
+  // Kullanıcı arama işlemi
   const filteredUsers = users.filter((user) => {
     const name = user.name ? user.name.toLowerCase() : "";
     const email = user.email ? user.email.toLowerCase() : "";
@@ -95,8 +113,9 @@ const UserManagement = () => {
 
   return (
     <div className="user-management-container">
-      <h2>Kullanıcı Oluşturma</h2>
+      <h2>Kullanıcı Yönetimi</h2>
       <Notification message={notification.message} type={notification.type} />
+
       <div className="user-add-form">
         <div className="form-group">
           <label htmlFor="name">İsim</label>
@@ -152,24 +171,19 @@ const UserManagement = () => {
         </button>
       </div>
 
-      {/* Ayarları Yönet Kısmı */}
-      {(currentUser?.role === "Admin" || currentUser?.role === "Moderatör") && (
-        <div className="settings-management">
-          <h2>Ayarları Yönet</h2>
-          {/* Ayarları yönet ile ilgili bileşenler ve işlemler buraya eklenebilir */}
-        </div>
-      )}
-
+      {/* Kullanıcı Arama */}
       <input
         type="text"
-        placeholder="Kullanıcı Ara..."
+        placeholder="Kullanıcı Ara"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-input"
       />
+
+      {/* Kullanıcı Listesi */}
       <table className="user-table">
         <thead>
           <tr>
-            <th>ID</th>
             <th>İsim</th>
             <th>E-posta</th>
             <th>Rol</th>
@@ -179,35 +193,20 @@ const UserManagement = () => {
         </thead>
         <tbody>
           {filteredUsers.map((user) => (
-            <tr key={user._id}>
-              <td>{user._id}</td>
+            <tr key={user.id}>
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.role}</td>
               <td>
-                <span
-                  className={
-                    user.isActive ? "status-active" : "status-inactive"
-                  }
+                <button
+                  onClick={() => handleSetActiveStatus(user.id, !user.isActive)}
                 >
-                  {user.isActive ? "Aktif" : "Pasif"}
-                </span>
+                  {user.isActive ? "Pasif Yap" : "Aktif Yap"}
+                </button>
               </td>
               <td>
-                <button
-                  className="edit-button"
-                  onClick={() => handleEditUser(user)}
-                >
-                  Düzenle
-                </button>
-                {currentUser?.role === "Admin" && (
-                  <button
-                    className="delete-button"
-                    onClick={() => handleDeleteUser(user._id)}
-                  >
-                    Sil
-                  </button>
-                )}
+                <button onClick={() => handleEditUser(user)}>Düzenle</button>
+                <button onClick={() => handleDeleteUser(user.id)}>Sil</button>
               </td>
             </tr>
           ))}

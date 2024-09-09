@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./styles/Login.css";
 import { UserContext } from "./AdminPanel/context/UserContext";
+import "./styles/Login.css";
 import logoImage from "./img/logo.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
-  const [identifier, setIdentifier] = useState(""); // Kullanıcı adı veya email
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,8 +26,7 @@ const Login = () => {
     setError("");
 
     try {
-      // loginUser fonksiyonuna identifier (email veya username) ve şifre gönderiliyor
-      await loginUser(identifier, password);
+      await loginUser(email, password);
       navigate("/admin", { replace: true });
     } catch (error) {
       setError(
@@ -47,14 +46,14 @@ const Login = () => {
           <h2>Giriş Yap</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>Kullanıcı Adı veya Email</label>
+              <label>E-posta</label>
               <input
-                type="text"
-                value={identifier}
-                onChange={(e) => setIdentifier(e.target.value)}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="username"
-                placeholder="Kullanıcı adı veya email"
+                placeholder="E-posta"
               />
             </div>
             <div className="form-group">
@@ -79,20 +78,6 @@ const Login = () => {
             {error && <div className="error-message">{error}</div>}
             <button type="submit" className="login-button" disabled={loading}>
               {loading ? "Yükleniyor..." : "Giriş Yap"}
-            </button>
-            <button
-              type="button"
-              className="signup-button"
-              onClick={() => navigate("/signup")}
-            >
-              Üyelik İste
-            </button>
-            <button
-              type="button"
-              className="forgot-password-button"
-              onClick={() => navigate("/forgot-password")}
-            >
-              Şifremi Unuttum
             </button>
           </form>
         </div>
