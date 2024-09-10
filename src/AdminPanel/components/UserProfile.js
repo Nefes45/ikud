@@ -1,69 +1,111 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { UserContext } from '../context/UserContext';
-import '../styles/UserProfile.css';
+import React, { useEffect, useState, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
+import "../styles/UserProfile.css";
 
 const UserProfile = () => {
-  const { userId } = useParams();
-  const { users, setUsers } = useContext(UserContext);
-  const [editMode, setEditMode] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { fetchUserById, updateUser } = useContext(UserContext);
+
+  const [user, setUser] = useState({
+    name: "",
+    role: "",
+  });
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    const selectedUser = users.find(user => user.id.toString() === userId);
-    if (selectedUser) {
-      setUserInfo(selectedUser);
+    if (!id || isNaN(Number(id))) {
+      setErrorMessage("Geçersiz kullanıcı ID'si.");
+      return;
     }
-  }, [userId, users]);
+
+    const getUser = async () => {
+      try {
+        const fetchedUser = await fetchUserById(id);
+        setUser({
+          name: fetchedUser.name,
+          role: fetchedUser.role,
+        });
+      } catch (error) {
+        setErrorMessage("Kullanıcı bilgileri alınamadı.");
+      }
+    };
+
+    getUser();
+  }, [id, fetchUserById]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserInfo({ ...userInfo, [name]: value });
+    setUser({ ...user, [name]: value });
   };
 
-  const handleSave = () => {
-    setUsers(prevUsers => prevUsers.map(user => user.id === userInfo.id ? userInfo : user));
-    setEditMode(false);
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    if (!id || isNaN(Number(id))) {
+      setErrorMessage("Güncelleme yapılamıyor, geçersiz kullanıcı ID'si.");
+      return;
+    }
+    try {
+      await updateUser(id, user);
+      setSuccessMessage("Kullanıcı başarıyla güncellendi!");
+      setTimeout(() => {
+        navigate("/admin/users");
+      }, 2000);
+    } catch (error) {
+      setErrorMessage("Kullanıcı güncellenirken hata oluştu.");
+    }
   };
 
-  if (!userInfo) {
-    return <div>Loading...</div>;
-  }
+  const handleCancel = () => {
+    navigate("/admin");
+  };
 
   return (
     <div className="user-profile-container">
-      <h2>User Profile</h2>
-      <div className="profile-info">
-        <div className="profile-row">
-          <label>Name:</label>
-          {editMode ? (
-            <input type="text" name="name" value={userInfo.name || ''} onChange={handleChange} />
-          ) : (
-            <span>{userInfo.name || 'Not specified'}</span>
-          )}
-        </div>
-        <div className="profile-row">
-          <label>Role:</label>
-          {editMode ? (
-            <select name="role" value={userInfo.role} onChange={handleChange}>
+      <h2>Kullanıcı Düzenle</h2>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {successMessage && <p className="success-message">{successMessage}</p>}
+      <form onSubmit={handleUpdate}>
+        <div className="profile-info">
+          <div className="profile-row">
+            <label htmlFor="name">İsim:</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              value={user.name}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="profile-row">
+            <label htmlFor="role">Rol:</label>
+            <select
+              name="role"
+              id="role"
+              value={user.role}
+              onChange={handleChange}
+            >
               <option value="Admin">Admin</option>
               <option value="Moderatör">Moderatör</option>
               <option value="Kullanıcı">Kullanıcı</option>
             </select>
-          ) : (
-            <span>{userInfo.role}</span>
-          )}
-        </div>
-        {editMode && (
-          <div className="profile-actions">
-            <button className="save-button" onClick={handleSave}>Save</button>
-            <button className="cancel-button" onClick={() => setEditMode(false)}>Cancel</button>
           </div>
-        )}
-        {!editMode && (
-          <button className="edit-button" onClick={() => setEditMode(true)}>Edit</button>
-        )}
-      </div>
+        </div>
+        <div className="profile-actions">
+          <button type="submit" className="save-button">
+            Güncelle
+          </button>
+          <button
+            type="button"
+            className="cancel-button"
+            onClick={handleCancel}
+          >
+            İptal
+          </button>
+        </div>
+      </form>
     </div>
   );
 };

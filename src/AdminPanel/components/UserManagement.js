@@ -1,18 +1,12 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import Notification from "./Notification";
 import "../styles/UserManagement.css";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 const UserManagement = () => {
-  const {
-    users = [],
-    addUser,
-    deleteUser,
-    currentUser,
-    setCurrentUser,
-    setActiveStatus,
-  } = useContext(UserContext);
+  const { users, addUser, deleteUser, currentUser, setCurrentUser, error } =
+    useContext(UserContext);
 
   const [newUser, setNewUser] = useState({
     name: "",
@@ -22,19 +16,16 @@ const UserManagement = () => {
   });
 
   const [notification, setNotification] = useState({ message: "", type: "" });
-  const [searchTerm, setSearchTerm] = useState(""); // Kullanıcı arama terimi
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log("Current User:", currentUser);
-  }, [currentUser]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewUser({ ...newUser, [name]: value });
   };
 
-  const handleAddUser = async () => {
+  const handleAddUser = async (e) => {
+    e.preventDefault();
     if (!newUser.name || !newUser.email || !newUser.password) {
       setNotification({
         message: "İsim, e-posta ve şifre gereklidir.",
@@ -59,131 +50,112 @@ const UserManagement = () => {
   };
 
   const handleDeleteUser = async (userId) => {
-    try {
-      await deleteUser(userId);
+    if (!userId) {
       setNotification({
-        message: "Kullanıcı başarıyla silindi!",
-        type: "success",
-      });
-    } catch (error) {
-      setNotification({
-        message: "Kullanıcı silinirken hata oluştu.",
+        message: "Kullanıcı ID'si geçersiz.",
         type: "error",
       });
+      return;
     }
-  };
 
-  const handleEditUser = (user) => {
-    navigate(`/admin/profile/${user.id}`);
+    if (window.confirm("Kullanıcıyı silmek istediğinizden emin misiniz?")) {
+      try {
+        await deleteUser(userId);
+        setNotification({
+          message: "Kullanıcı başarıyla silindi!",
+          type: "success",
+        });
+      } catch (error) {
+        setNotification({
+          message: "Kullanıcı silinirken hata oluştu.",
+          type: "error",
+        });
+      }
+    }
   };
 
   const handleLogout = () => {
     if (currentUser) {
-      localStorage.removeItem("currentUser");
-      setCurrentUser(null);
-      navigate("/login");
+      localStorage.removeItem("token");
+      setCurrentUser(null); // Kullanıcıyı çıkış yaptır
+      navigate("/login"); // Çıkış sonrası login ekranına yönlendir
     }
   };
 
-  // Kullanıcı durumunu güncelle
-  const handleSetActiveStatus = async (userId, isActive) => {
-    try {
-      await setActiveStatus(userId, isActive);
-      setNotification({
-        message: `Kullanıcı durumu ${
-          isActive ? "aktif" : "pasif"
-        } olarak güncellendi!`,
-        type: "success",
-      });
-    } catch (error) {
-      setNotification({
-        message: "Kullanıcı durumu güncellenirken hata oluştu.",
-        type: "error",
-      });
-    }
-  };
-
-  // Kullanıcı arama işlemi
-  const filteredUsers = users.filter((user) => {
-    const name = user.name ? user.name.toLowerCase() : "";
-    const email = user.email ? user.email.toLowerCase() : "";
-    const search = searchTerm.toLowerCase();
-    return name.includes(search) || email.includes(search);
-  });
+  const filteredUsers = users.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="user-management-container">
       <h2>Kullanıcı Yönetimi</h2>
+      {error && <div className="error-message">{error}</div>}
       <Notification message={notification.message} type={notification.type} />
-
-      <div className="user-add-form">
-        <div className="form-group">
-          <label htmlFor="name">İsim</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={newUser.name}
-            onChange={handleInputChange}
-            placeholder="İsim"
-          />
+      <form onSubmit={handleAddUser}>
+        <div className="user-add-form">
+          <div className="form-group">
+            <label htmlFor="name">İsim</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              value={newUser.name}
+              onChange={handleInputChange}
+              placeholder="İsim"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">E-posta</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value={newUser.email}
+              onChange={handleInputChange}
+              placeholder="E-posta"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="role">Rol</label>
+            <select
+              name="role"
+              id="role"
+              value={newUser.role}
+              onChange={handleInputChange}
+            >
+              <option value="Admin">Admin</option>
+              <option value="Moderatör">Moderatör</option>
+              <option value="Kullanıcı">Kullanıcı</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Şifre</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              value={newUser.password}
+              onChange={handleInputChange}
+              placeholder="Şifre"
+            />
+          </div>
+          <button type="submit" className="save-button">
+            Kullanıcı Ekle
+          </button>
         </div>
-        <div className="form-group">
-          <label htmlFor="email">E-posta</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={newUser.email}
-            onChange={handleInputChange}
-            placeholder="E-posta"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="role">Rol</label>
-          <select
-            name="role"
-            id="role"
-            value={newUser.role}
-            onChange={handleInputChange}
-          >
-            <option value="Admin">Admin</option>
-            <option value="Moderatör">Moderatör</option>
-            <option value="Kullanıcı">Kullanıcı</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Şifre</label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            value={newUser.password}
-            onChange={handleInputChange}
-            placeholder="Şifre"
-          />
-        </div>
-        <button className="save-button" onClick={handleAddUser}>
-          Kullanıcı Ekle
-        </button>
-        <button className="logout-button" onClick={handleLogout}>
-          Çıkış Yap
-        </button>
-      </div>
-
-      {/* Kullanıcı Arama */}
+      </form>
       <input
         type="text"
-        placeholder="Kullanıcı Ara"
+        placeholder="Kullanıcı Ara..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="search-input"
       />
-
-      {/* Kullanıcı Listesi */}
       <table className="user-table">
         <thead>
           <tr>
+            <th>ID</th>
             <th>İsim</th>
             <th>E-posta</th>
             <th>Rol</th>
@@ -194,24 +166,36 @@ const UserManagement = () => {
         <tbody>
           {filteredUsers.map((user) => (
             <tr key={user.id}>
+              <td>{user.id}</td>
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.role}</td>
               <td>
-                <button
-                  onClick={() => handleSetActiveStatus(user.id, !user.isActive)}
+                <span
+                  className={
+                    user.isActive ? "status-active" : "status-inactive"
+                  }
                 >
-                  {user.isActive ? "Pasif Yap" : "Aktif Yap"}
-                </button>
+                  {user.isActive ? "Aktif" : "Pasif"}
+                </span>
               </td>
               <td>
-                <button onClick={() => handleEditUser(user)}>Düzenle</button>
-                <button onClick={() => handleDeleteUser(user.id)}>Sil</button>
+                {currentUser?.role === "Admin" && (
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDeleteUser(user.id)}
+                  >
+                    Sil
+                  </button>
+                )}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <button onClick={handleLogout} className="logout-button">
+        Çıkış Yap
+      </button>
     </div>
   );
 };

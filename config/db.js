@@ -3,16 +3,16 @@ const mysql = require("mysql2");
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
-  database: "users_db", // MySQL veritabanı adı
+  password: "Aifa2010.!", // Veritabanı şifreniz
+  database: "users_db", // Veritabanı ismi
 });
 
 connection.connect((err) => {
   if (err) {
-    console.error("Error connecting to MySQL:", err.stack);
+    console.error("Veritabanı bağlantı hatası:", err);
     return;
   }
-  console.log("Connected to MySQL as id " + connection.threadId);
+  console.log("Veritabanına bağlanıldı.");
 });
 
 module.exports = connection;

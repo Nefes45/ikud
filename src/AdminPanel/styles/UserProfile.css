@@ -67,15 +67,6 @@
   font-size: 1rem;
 }
 
-.edit-button {
-  background-color: #007bff;
-  color: white;
-}
-
-.edit-button:hover {
-  background-color: #0056b3;
-}
-
 .save-button {
   background-color: #28a745;
   color: white;

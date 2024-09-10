@@ -1,25 +1,38 @@
-// C:\Users\ozcan\Documents\GitHub\ikud\src\UserList.js
-import React, { useState, useEffect } from 'react';
-import usersData from './users.json'; // JSON dosyasını projenin içinde import et
+import React, { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 const UserList = () => {
-  const [users, setUsers] = useState([]);
+  const { users, deleteUser } = useContext(UserContext);
 
-  useEffect(() => {
-    // JSON dosyasından kullanıcıları yükleme
-    setUsers(usersData);
-  }, []);
+  const handleDeleteUser = (userId) => {
+    deleteUser(userId);
+  };
 
   return (
     <div>
-      <h1>Kullanıcı Listesi</h1>
-      <ul>
-        {users.map(user => (
-          <li key={user.id}>
-            {user.name} - {user.email} - {user.role} - {user.isActive ? 'Aktif' : 'Pasif'}
-          </li>
-        ))}
-      </ul>
+      <h2>Kullanıcı Listesi</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>İsim</th>
+            <th>Email</th>
+            <th>İşlemler</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>
+                <button onClick={() => handleDeleteUser(user.id)}>Sil</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
