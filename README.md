@@ -1,70 +1,112 @@
-# Getting Started with Create React App
+<div align="center">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# IKUD — Live Precious Metals Price Platform
 
-## Available Scripts
+**Real-time gold and foreign-exchange price display with a configurable administration panel.**
 
-In the project directory, you can run:
+[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-Express-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![WebSocket](https://img.shields.io/badge/Data-WebSocket-010101)](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
 
-### `npm start`
+[Türkçe](#türkçe) · [English](#english)
 
-Runs the app in the development mode.\
-Open [http://localhost:3003](http://localhost:3003) to view it in your browser.
+</div>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Türkçe
 
-### `npm test`
+IKUD; kuyumculuk ve döviz sektöründe canlı fiyatların müşterilere hızlı, okunabilir ve yönetilebilir biçimde sunulması için geliştirilmiş bir web uygulamasıdır.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Öne çıkanlar
 
-### `npm run build`
+- Altın, döviz ve parite fiyatlarının canlı gösterimi
+- WebSocket tabanlı gerçek zamanlı veri akışı
+- Yetkilendirilmiş kullanıcı girişi ve korumalı sayfalar
+- Fiyat yayını başlatma/durdurma ve anlık fiyat dondurma
+- 14 ve 18 ayar görünürlük kontrolleri
+- Kayan yazı içeriği ve hız yönetimi
+- Yönetim paneli üzerinden ekran ayarları
+- Responsive kullanıcı arayüzü
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Teknolojiler
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- React 18, React Router
+- Node.js, Express
+- WebSocket
+- Firebase, MongoDB/Mongoose ve MySQL istemcileri
+- Chart.js, Bootstrap
+- Formik ve Yup
+- JWT tabanlı kimlik doğrulama bileşenleri
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Yerel kurulum
 
-### `npm run eject`
+```bash
+git clone https://github.com/Nefes45/ikud.git
+cd ikud
+npm install
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Uygulama varsayılan olarak `http://localhost:3003` adresinde çalışır. Sunucu tarafını ayrı çalıştırmak için:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm run server
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+> Ortam değişkenleri ve harici servis bilgileri güvenlik nedeniyle repoda paylaşılmamalıdır. Yerel kullanım için kendi `.env` dosyanızı oluşturun.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Durum
 
-## Learn More
+Bu proje aktif geliştirme/portföy sunumu amacıyla paylaşılmaktadır. Üretim ortamına almadan önce ortam değişkenleri, yetkilendirme, hata yönetimi ve test kapsamı gözden geçirilmelidir.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## English
 
-### Code Splitting
-[![Netlify Status](https://api.netlify.com/api/v1/badges/3f47e695-e4a5-42f1-ab59-a16b674ba407/deploy-status)](https://app.netlify.com/sites/ikud/deploys)
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+IKUD is a web application built for the jewellery and foreign-exchange industry. It presents live market prices in a fast, readable interface and provides operational controls through an administration panel.
 
-### Analyzing the Bundle Size
+### Highlights
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Live gold, currency and parity prices
+- Real-time WebSocket data flow
+- Authenticated users and protected routes
+- Start/stop streaming and freeze displayed prices
+- Visibility controls for 14K and 18K prices
+- Configurable ticker text and speed
+- Screen configuration through an administration panel
+- Responsive user interface
 
-### Making a Progressive Web App
+### Tech stack
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- React 18 and React Router
+- Node.js and Express
+- WebSocket
+- Firebase, MongoDB/Mongoose and MySQL clients
+- Chart.js and Bootstrap
+- Formik and Yup
+- JWT-oriented authentication components
 
-### Advanced Configuration
+### Local setup
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+git clone https://github.com/Nefes45/ikud.git
+cd ikud
+npm install
+npm start
+```
 
-### Deployment
+The application runs at `http://localhost:3003` by default. To start the server separately:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
+npm run server
+```
 
-### `npm run build` fails to minify
+> Secrets and external service credentials must not be committed. Create your own local `.env` file.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Project status
+
+Shared as an actively developed portfolio project. Review environment configuration, authorization, error handling and test coverage before production deployment.
+
+## Author
+
+**Özcan Karakoç** — Full-Stack Software Developer  
+[GitHub](https://github.com/Nefes45)
