@@ -40,7 +40,7 @@ IKUD; kuyumculuk ve döviz sektöründe canlı fiyatların müşterilere hızlı
 ### Yerel kurulum
 
 ```bash
-git clone https://github.com/Nefes45/ikud.git
+git clone https://github.com/ozcan-karakoc/ikud.git
 cd ikud
 npm install
 npm start
@@ -88,7 +88,7 @@ IKUD is a web application built for the jewellery and foreign-exchange industry.
 ### Local setup
 
 ```bash
-git clone https://github.com/Nefes45/ikud.git
+git clone https://github.com/ozcan-karakoc/ikud.git
 cd ikud
 npm install
 npm start
@@ -109,4 +109,4 @@ Shared as an actively developed portfolio project. Review environment configurat
 ## Author
 
 **Özcan Karakoç** — Full-Stack Software Developer  
-[GitHub](https://github.com/Nefes45)
+[GitHub](https://github.com/ozcan-karakoc)
