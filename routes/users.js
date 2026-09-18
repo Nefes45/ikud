@@ -4,6 +4,13 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const db = require("../config/db");
 
+const getJwtSecret = () => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET ortam değişkeni tanımlı değil.");
+  }
+  return process.env.JWT_SECRET;
+};
+
 // Kullanıcı giriş işlemi (Login)
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
@@ -31,10 +38,11 @@ router.post("/login", (req, res) => {
         return res.status(400).json({ error: "Geçersiz şifre." });
       }
 
-      const token = jwt.sign({ id: user.id }, "secret_key", {
+      const token = jwt.sign({ id: user.id }, getJwtSecret(), {
         expiresIn: "1h",
       });
-      return res.json({ token, user });
+      const { password: _password, ...safeUser } = user;
+      return res.json({ token, user: safeUser });
     }
   );
 });
@@ -48,7 +56,7 @@ router.post("/register", (req, res) => {
   db.query(
     "INSERT INTO users (name, email, password, role, isActive) VALUES (?, ?, ?, ?, ?)",
     [name, email, hashedPassword, role, 1],
-    (err, results) => {
+    (err) => {
       if (err) {
         return res.status(500).json({ error: "Kullanıcı eklenemedi." });
       }
