@@ -2,6 +2,13 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const connection = require("../config/db");
 
+const getJwtSecret = () => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET ortam değişkeni tanımlı değil.");
+  }
+  return process.env.JWT_SECRET;
+};
+
 // Kullanıcı giriş işlemi (Login)
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -31,13 +38,12 @@ exports.loginUser = async (req, res) => {
           return res.status(400).json({ error: "Geçersiz şifre." });
         }
 
-        const token = jwt.sign(
-          { id: user.id },
-          process.env.JWT_SECRET || "secret_key",
-          { expiresIn: "1h" }
-        );
+        const token = jwt.sign({ id: user.id }, getJwtSecret(), {
+          expiresIn: "1h",
+        });
+        const { password: _password, ...safeUser } = user;
 
-        return res.json({ token, user });
+        return res.json({ token, user: safeUser });
       }
     );
   } catch (error) {
@@ -62,7 +68,7 @@ exports.addUser = async (req, res) => {
     connection.query(
       "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)",
       [name, email, hashedPassword, role],
-      (err, results) => {
+      (err) => {
         if (err) {
           console.error("Veritabanına eklenirken hata:", err);
           return res.status(500).json({ error: "Kullanıcı eklenemedi." });
